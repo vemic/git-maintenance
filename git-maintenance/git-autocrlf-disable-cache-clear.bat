@@ -1,9 +1,9 @@
 @echo off
 chcp 932 >nul
 
-rem ========================================
-rem Git AutoCRLF無効化＋キャッシュクリアツール
-rem ========================================
+REM ========================================
+REM Git AutoCRLF無効化＋キャッシュクリアツール
+REM ========================================
 
 set "SCRIPT_DIR=%~dp0"
 set "CONFIG_FILE=%SCRIPT_DIR%conf\config.txt"
@@ -11,14 +11,14 @@ set "REPO_LIST_FILE=%SCRIPT_DIR%conf\repositories.txt"
 set "LOG_DIR=%SCRIPT_DIR%log"
 set "BACKUP_DIR=%SCRIPT_DIR%backup"
 
-rem PowerShellを使用して安全な日付時刻文字列を生成
+REM PowerShellを使用して安全な日付時刻文字列を生成
 for /f "tokens=*" %%i in ('powershell -Command "Get-Date -Format 'yyyyMMdd_HHmmss'"') do set "DATETIME_STR=%%i"
 set "LOG_FILE=%LOG_DIR%\git-autocrlf-disable-cache-clear_%DATETIME_STR%.log"
 
-rem ログファイルの絶対パス化（pushd後でも正しく動作するように）
+REM ログファイルの絶対パス化（pushd後でも正しく動作するように）
 for %%i in ("%LOG_FILE%") do set "LOG_FILE_ABS=%%~fi"
 
-rem 初期設定の検証
+REM 初期設定の検証
 call :ValidateSetup || goto :SetupError
 setlocal enabledelayedexpansion
 
@@ -43,6 +43,7 @@ if "%MODE%"=="5" goto :Exit
 
 echo 無効な選択です。
 pause
+endlocal
 exit /b 1
 
 :SetupError
@@ -67,24 +68,26 @@ exit /b 1
 
 :Exit
 echo ツールを終了します。
+endlocal
 exit /b 0
 
 :MainProcess
+setlocal enabledelayedexpansion
 call :LoadConfig || goto :ConfigError
 call :ValidateConfig || goto :ConfigError
 
-rem ログディレクトリとバックアップディレクトリの作成
+REM ログディレクトリとバックアップディレクトリの作成
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%"
 
-rem ログファイル初期化
+REM ログファイル初期化
 echo [%date% %time%] Git AutoCRLF 無効化＋キャッシュクリア処理開始 > "%LOG_FILE_ABS%"
 
 echo ベースディレクトリ: %BASE_DIR%
 echo ログファイル: %LOG_FILE%
 echo.
 
-rem グローバルautocrlf設定の確認と変更
+REM グローバルautocrlf設定の確認と変更
 echo グローバルautocrlf設定の確認中...
 for /f "tokens=*" %%a in ('git config --global core.autocrlf 2^>nul') do set "GLOBAL_AUTOCRLF=%%a"
 if not defined GLOBAL_AUTOCRLF set "GLOBAL_AUTOCRLF=未設定"
@@ -92,16 +95,16 @@ echo   現在のグローバル設定: %GLOBAL_AUTOCRLF%
 
 echo   実行: git config --global core.autocrlf false
 git config --global core.autocrlf false
-if errorlevel 1 (
-    echo 警告: グローバルautocrlf設定の変更に失敗しました
-    echo [%date% %time%] 警告: グローバルautocrlf設定変更失敗 >> "%LOG_FILE_ABS%"
-) else (
+if not errorlevel 1 (
     echo   グローバルautocrlf設定をfalseに変更しました
     echo [%date% %time%] グローバルautocrlf設定をfalseに変更 >> "%LOG_FILE_ABS%"
+) else (
+    echo 警告: グローバルautocrlf設定の変更に失敗しました
+    echo [%date% %time%] 警告: グローバルautocrlf設定変更失敗 >> "%LOG_FILE_ABS%"
 )
 echo.
 
-rem リポジトリリストの表示
+REM リポジトリリストの表示
 echo 対象リポジトリ:
 echo ----------------------------------------
 type "%REPO_LIST_FILE%"
@@ -112,6 +115,7 @@ set /p "CONFIRM=処理を実行しますか？ (Y/N): "
 if /i not "%CONFIRM%"=="Y" (
     echo 処理をキャンセルしました。
     pause
+    endlocal
     exit /b 0
 )
 
@@ -122,11 +126,11 @@ echo.
 set "SUCCESS_COUNT=0"
 set "ERROR_COUNT=0"
 
-rem リポジトリリストの処理
+REM リポジトリリストの処理
 for /f "usebackq tokens=*" %%r in ("%REPO_LIST_FILE%") do (
     set "REPO_NAME=%%r"
     
-    rem コメント行やempty行をスキップ
+    REM コメント行やempty行をスキップ
     if not "!REPO_NAME!"=="" (
         if not "!REPO_NAME:~0,1!"=="#" (
             call :ProcessRepository "!REPO_NAME!"
@@ -144,12 +148,14 @@ echo ログファイル: %LOG_FILE%
 echo.
 
 pause
+endlocal
 exit /b 0
 
-rem ========================================
-rem リポジトリ処理関数
-rem ========================================
+REM ========================================
+REM リポジトリ処理関数
+REM ========================================
 :ProcessRepository
+setlocal enabledelayedexpansion
 set "REPO_NAME=%~1"
 set "REPO_PATH=%BASE_DIR%\%REPO_NAME%"
 
@@ -157,54 +163,59 @@ echo ----------------------------------------
 echo 処理中: %REPO_NAME%
 echo ----------------------------------------
 
-rem ログ出力
+REM ログ出力
 echo [%date% %time%] 処理開始: %REPO_NAME% >> "%LOG_FILE_ABS%"
 
-rem リポジトリディレクトリの確認
+REM リポジトリディレクトリの確認
 if not exist "%REPO_PATH%" (
     echo エラー: リポジトリディレクトリが見つかりません: %REPO_PATH%
     echo [%date% %time%] エラー: ディレクトリ不存在 %REPO_PATH% >> "%LOG_FILE_ABS%"
     set /a ERROR_COUNT+=1
+    endlocal
     goto :eof
 )
 
-rem .gitディレクトリの確認
+REM .gitディレクトリの確認
 if not exist "%REPO_PATH%\.git" (
     echo エラー: Gitリポジトリではありません: %REPO_PATH%
     echo [%date% %time%] エラー: Gitリポジトリではない %REPO_PATH% >> "%LOG_FILE_ABS%"
     set /a ERROR_COUNT+=1
+    endlocal
     goto :eof
 )
 
-rem ドライブを跨ぐ可能性があるため、ディレクトリ移動
+REM ドライブを跨ぐ可能性があるため、ディレクトリ移動
 pushd "%REPO_PATH%" || (
     echo エラー: ディレクトリに移動できません: %REPO_PATH%
     echo [%date% %time%] エラー: ディレクトリ移動失敗 %REPO_PATH% >> "%LOG_FILE_ABS%"
     set /a ERROR_COUNT+=1
+    endlocal
     goto :eof
 )
 
-rem 現在のステータス確認
+REM 現在のステータス確認
 echo 1. ステータス確認中...
 call :CheckGitStatus || (
     echo エラー: Git状態確認に失敗しました
     popd
+    endlocal
     set /a ERROR_COUNT+=1
     goto :eof
 )
 
-rem 変更がある場合のスタッシュ
+REM 変更がある場合のスタッシュ
 echo 2. 変更確認・スタッシュ中...
 call :HandleChanges || (
     echo エラー: 変更処理に失敗しました
     popd
+    endlocal
     set /a ERROR_COUNT+=1
     goto :eof
 )
 
-rem .gitフォルダのバックアップ作成（スタッシュ後に実行）
+REM .gitフォルダのバックアップ作成（スタッシュ後に実行）
 echo 3. .gitフォルダバックアップ作成中...
-rem PowerShellを使用してバックアップ用タイムスタンプ生成
+REM PowerShellを使用してバックアップ用タイムスタンプ生成
 for /f "tokens=*" %%i in ('powershell -Command "Get-Date -Format 'yyyyMMdd_HHmmss'"') do set "BACKUP_TIMESTAMP=%%i"
 set "GIT_BACKUP_DIR=%BACKUP_DIR%\%REPO_NAME%_%BACKUP_TIMESTAMP%"
 
@@ -212,11 +223,12 @@ call :CreateBackup "%REPO_PATH%\.git" "%GIT_BACKUP_DIR%" || (
     echo エラー: .gitフォルダのバックアップに失敗しました
     echo [%date% %time%] エラー: バックアップ失敗により処理中止 %REPO_NAME% >> "%LOG_FILE_ABS%"
     popd
+    endlocal
     set /a ERROR_COUNT+=1
     goto :eof
 )
 
-rem 現在のautocrlf設定確認
+REM 現在のautocrlf設定確認
 echo 4. 現在のautocrlf設定確認中...
 echo   実行: git config core.autocrlf
 for /f "tokens=*" %%a in ('git config core.autocrlf 2^>nul') do set "CURRENT_AUTOCRLF=%%a"
@@ -224,20 +236,22 @@ if not defined CURRENT_AUTOCRLF set "CURRENT_AUTOCRLF=未設定"
 echo   現在の設定: %CURRENT_AUTOCRLF%
 echo [%date% %time%] 現在のautocrlf設定: %CURRENT_AUTOCRLF% %REPO_NAME% >> "%LOG_FILE_ABS%"
 
-rem autocrlf=false に設定
+REM autocrlf=false に設定
 echo 5. autocrlf=false に設定中...
 call :SetAutocrlfFalse || (
     echo エラー: autocrlf設定変更に失敗しました
     popd
+    endlocal
     set /a ERROR_COUNT+=1
     goto :eof
 )
 
-rem GitキャッシュをクリアしてワーキングディレクトリをHEADで上書き
+REM GitキャッシュをクリアしてワーキングディレクトリをHEADで上書き
 echo 6. Gitキャッシュ一括クリア・HEADリセット中...
 call :ResetToHead || (
     echo エラー: キャッシュクリア・HEADリセットに失敗しました
     popd
+    endlocal
     set /a ERROR_COUNT+=1
     goto :eof
 )
@@ -248,12 +262,14 @@ echo 7. 完了: %REPO_NAME%
 echo [%date% %time%] 処理完了: %REPO_NAME% >> "%LOG_FILE_ABS%"
 set /a SUCCESS_COUNT+=1
 
+endlocal
 goto :eof
 
-rem ========================================
-rem リポジトリ情報確認機能
-rem ========================================
+REM ========================================
+REM リポジトリ情報確認機能
+REM ========================================
 :CheckRepositories
+setlocal enabledelayedexpansion
 call :LoadConfig || goto :ConfigError
 call :ValidateConfig || goto :ConfigError
 
@@ -263,7 +279,7 @@ echo リポジトリ情報確認
 echo ========================================
 echo ベースディレクトリ: %BASE_DIR%
 
-rem グローバルautocrlf設定の表示
+REM グローバルautocrlf設定の表示
 for /f "tokens=*" %%a in ('git config --global core.autocrlf 2^>nul') do set "GLOBAL_AUTOCRLF=%%a"
 if not defined GLOBAL_AUTOCRLF set "GLOBAL_AUTOCRLF=未設定"
 echo グローバルautocrlf設定: %GLOBAL_AUTOCRLF%
@@ -293,9 +309,11 @@ echo 有効: %VALID_COUNT% リポジトリ
 echo エラー: %CHECK_ERROR_COUNT% リポジトリ
 echo.
 pause
+endlocal
 exit /b 0
 
 :CheckRepository
+setlocal enabledelayedexpansion
 set "REPO_NAME=%~1"
 set "REPO_PATH=%BASE_DIR%\%REPO_NAME%"
 
@@ -307,6 +325,7 @@ if not exist "%REPO_PATH%" (
     echo   状態: ディレクトリが存在しません
     echo   パス: %REPO_PATH%
     set /a CHECK_ERROR_COUNT+=1
+    endlocal
     goto :eof
 )
 
@@ -314,32 +333,36 @@ if not exist "%REPO_PATH%\.git" (
     echo   状態: Gitリポジトリではありません
     echo   パス: %REPO_PATH%
     set /a CHECK_ERROR_COUNT+=1
+    endlocal
     goto :eof
 )
 
-pushd "%REPO_PATH%" || goto :eof
+pushd "%REPO_PATH%" || (
+    endlocal
+    goto :eof
+)
 
-rem 現在のブランチ
+REM 現在のブランチ
 for /f "tokens=*" %%b in ('git rev-parse --abbrev-ref HEAD 2^>nul') do set "CURRENT_BRANCH=%%b"
 if not defined CURRENT_BRANCH set "CURRENT_BRANCH=不明"
 
-rem autocrlf設定
+REM autocrlf設定
 for /f "tokens=*" %%a in ('git config core.autocrlf 2^>nul') do set "AUTOCRLF=%%a"
 if not defined AUTOCRLF set "AUTOCRLF=未設定"
 
-rem 変更状況
+REM 変更状況
 git diff --quiet 2>nul
-if errorlevel 1 (
-    set "HAS_CHANGES=あり"
-) else (
+if not errorlevel 1 (
     set "HAS_CHANGES=なし"
+) else (
+    set "HAS_CHANGES=あり"
 )
 
-rem スタッシュ数
+REM スタッシュ数
 for /f "tokens=*" %%s in ('git stash list 2^>nul ^| find /c /v ""') do set "STASH_COUNT=%%s"
 if not defined STASH_COUNT set "STASH_COUNT=0"
 
-rem git-autocrlf-disable関連スタッシュ数
+REM git-autocrlf-disable関連スタッシュ数
 for /f "tokens=*" %%t in ('git stash list 2^>nul ^| findstr /C:"git-autocrlf-disable" ^| find /c /v ""') do set "DISABLE_STASH_COUNT=%%t"
 if not defined DISABLE_STASH_COUNT set "DISABLE_STASH_COUNT=0"
 
@@ -354,19 +377,15 @@ echo   スタッシュ数: %STASH_COUNT% (disable関連: %DISABLE_STASH_COUNT%)
 
 set /a VALID_COUNT+=1
 
-rem 変数クリア
-set "CURRENT_BRANCH="
-set "AUTOCRLF="
-set "HAS_CHANGES="
-set "STASH_COUNT="
-set "DISABLE_STASH_COUNT="
-
+popd
+endlocal
 goto :eof
 
-rem ========================================
-rem スタッシュ一覧表示機能
-rem ========================================
+REM ========================================
+REM スタッシュ一覧表示機能
+REM ========================================
 :ListStashes
+setlocal enabledelayedexpansion
 call :LoadConfig || goto :ConfigError
 call :ValidateConfig || goto :ConfigError
 
@@ -388,22 +407,32 @@ for /f "usebackq tokens=*" %%r in ("%REPO_LIST_FILE%") do (
 )
 
 pause
+endlocal
 exit /b 0
 
 :ShowRepositoryStashes
+setlocal enabledelayedexpansion
 set "REPO_NAME=%~1"
 set "REPO_PATH=%BASE_DIR%\%REPO_NAME%"
 
-if not exist "%REPO_PATH%\.git" goto :eof
+if not exist "%REPO_PATH%\.git" (
+    endlocal
+    goto :eof
+)
 
 echo ----------------------------------------
 echo %REPO_NAME%
 echo ----------------------------------------
 
-pushd "%REPO_PATH%" || goto :eof
+pushd "%REPO_PATH%" || (
+    endlocal
+    goto :eof
+)
 
 git stash list 2>nul | findstr /C:"git-autocrlf-disable" >nul
-if errorlevel 1 (
+if not errorlevel 1 (
+    git stash list 2>nul
+) else (
     git stash list 2>nul | find /c /v "" > temp_count.txt
     set /p STASH_COUNT=<temp_count.txt
     del temp_count.txt
@@ -413,17 +442,17 @@ if errorlevel 1 (
     ) else (
         echo スタッシュなし
     )
-) else (
-    git stash list 2>nul
 )
 
 popd
+endlocal
 goto :eof
 
-rem ========================================
-rem git-autocrlf-disable関連スタッシュ復元機能
-rem ========================================
+REM ========================================
+REM git-autocrlf-disable関連スタッシュ復元機能
+REM ========================================
 :RestoreStashes
+setlocal enabledelayedexpansion
 call :LoadConfig || goto :ConfigError
 call :ValidateConfig || goto :ConfigError
 
@@ -440,6 +469,7 @@ set /p "RESTORE_CONFIRM=実行しますか？ (Y/N): "
 if /i not "%RESTORE_CONFIRM%"=="Y" (
     echo キャンセルしました。
     pause
+    endlocal
     exit /b 0
 )
 
@@ -454,30 +484,38 @@ for /f "usebackq tokens=*" %%r in ("%REPO_LIST_FILE%") do (
 )
 
 pause
+endlocal
 exit /b 0
 
 :RestoreRepositoryStash
+setlocal enabledelayedexpansion
 set "REPO_NAME=%~1"
 set "REPO_PATH=%BASE_DIR%\%REPO_NAME%"
 
-if not exist "%REPO_PATH%\.git" goto :eof
+if not exist "%REPO_PATH%\.git" (
+    endlocal
+    goto :eof
+)
 
 echo ----------------------------------------
 echo %REPO_NAME%
 echo ----------------------------------------
 
-pushd "%REPO_PATH%" || goto :eof
+pushd "%REPO_PATH%" || (
+    endlocal
+    goto :eof
+)
 
-rem git-autocrlf-disable関連のスタッシュを検索
+REM git-autocrlf-disable関連のスタッシュを検索
 for /f "tokens=1,* delims=:" %%a in ('git stash list 2^>nul ^| findstr /C:"git-autocrlf-disable"') do (
     set "STASH_REF=%%a"
     set "STASH_MSG=%%b"
     echo スタッシュ復元: !STASH_REF! -!STASH_MSG!
     git stash pop "!STASH_REF!" 2>nul
-    if errorlevel 1 (
-        echo エラー: スタッシュ復元に失敗しました
-    ) else (
+    if not errorlevel 1 (
         echo 成功: スタッシュを復元しました
+    ) else (
+        echo エラー: スタッシュ復元に失敗しました
     )
     goto :RestoreRepositoryStashEnd
 )
@@ -486,35 +524,42 @@ echo git-autocrlf-disable関連のスタッシュが見つかりません
 
 :RestoreRepositoryStashEnd
 popd
+endlocal
 goto :eof
 
-rem ========================================
-rem 設定とエラーハンドリング関数
-rem ========================================
+REM ========================================
+REM 設定とエラーハンドリング関数
+REM ========================================
 
 :ValidateSetup
-rem ディレクトリ作成
+setlocal
+REM ディレクトリ作成
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%"
 
-rem 基本ファイルの存在確認
+REM 基本ファイルの存在確認
 if not exist "%CONFIG_FILE%" (
     echo エラー: 設定ファイル %CONFIG_FILE% が見つかりません。
+    endlocal
     exit /b 1
 )
 
 if not exist "%REPO_LIST_FILE%" (
     echo エラー: リポジトリリストファイル %REPO_LIST_FILE% が見つかりません。
+    endlocal
     exit /b 1
 )
 
+endlocal
 exit /b 0
 
 :LoadConfig
-rem 設定読み込み
+setlocal
+REM 設定読み込み
 echo 設定ファイル読み込み中: %CONFIG_FILE%
 if not exist "%CONFIG_FILE%" (
     echo エラー: 設定ファイルが存在しません: %CONFIG_FILE%
+    endlocal
     exit /b 1
 )
 
@@ -528,125 +573,148 @@ for /f "usebackq tokens=1,* delims==" %%a in ("%CONFIG_FILE%") do (
         echo 読み込み: SEVENZIP_PATH=%%b
     )
 )
+endlocal & set "BASE_DIR=%BASE_DIR%" & set "SEVENZIP_PATH=%SEVENZIP_PATH%"
 exit /b 0
 
 :ValidateConfig
-rem BASE_DIR設定確認
+setlocal
+REM BASE_DIR設定確認
 if not defined BASE_DIR (
     echo エラー: BASE_DIR が設定されていません。
+    endlocal
     exit /b 1
 )
 
-rem BASE_DIRの存在確認
+REM BASE_DIRの存在確認
 if not exist "%BASE_DIR%" (
     echo エラー: BASE_DIR で指定されたディレクトリが存在しません: %BASE_DIR%
+    endlocal
     exit /b 1
 )
 
-rem 7z.exeの存在確認（設定されている場合のみ）
+REM 7z.exeの必須確認（7z.exeが必須になったので警告に変更）
 if defined SEVENZIP_PATH (
     if not exist "%SEVENZIP_PATH%" (
-        echo 警告: 指定された7z.exeが見つかりません: %SEVENZIP_PATH%
-        echo xcopyによるバックアップを使用します。
-        set "SEVENZIP_PATH="
+        echo エラー: 指定された7z.exeが見つかりません: %SEVENZIP_PATH%
+        echo この新バージョンでは7z.exeは必須です。
+        endlocal
+        exit /b 1
     )
+) else (
+    echo エラー: SEVENZIP_PATHが設定されていません。
+    echo この新バージョンでは7z.exeは必須です。
+    endlocal
+    exit /b 1
 )
 
+endlocal
 exit /b 0
 
 :CreateBackup
+setlocal enabledelayedexpansion
 set "SOURCE_PATH=%~1"
 set "BACKUP_PATH=%~2"
 
-rem 7z.exeが使用可能な場合は圧縮バックアップ
-if defined SEVENZIP_PATH (
-    echo   実行: "%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5
-    "%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5 >nul 2>&1
-    if not errorlevel 1 (
-        echo   7z圧縮バックアップ完了: %BACKUP_PATH%.7z
-        echo [%date% %time%] 7z圧縮バックアップ完了: %BACKUP_PATH%.7z >> "%LOG_FILE_ABS%"
-        exit /b 0
-    ) else (
-        echo 警告: 7z圧縮に失敗しました。xcopyを使用します。
-        echo [%date% %time%] 警告: 7z圧縮失敗、xcopy使用 %REPO_NAME% >> "%LOG_FILE_ABS%"
-    )
-)
-
-rem xcopyによるフォルダコピー
-echo   実行: xcopy "%SOURCE_PATH%" "%BACKUP_PATH%" /E /I /H /Y
-xcopy "%SOURCE_PATH%" "%BACKUP_PATH%" /E /I /H /Y >nul 2>&1
-if errorlevel 1 (
-    echo エラー: .gitフォルダのバックアップに失敗しました
-    echo [%date% %time%] エラー: .gitバックアップ失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
+REM 7z.exe使用が必須
+if not defined SEVENZIP_PATH (
+    echo エラー: 7z.exeが設定されていません
+    endlocal
     exit /b 1
 )
 
-echo   フォルダバックアップ完了: %BACKUP_PATH%
-echo [%date% %time%] フォルダバックアップ完了: %BACKUP_PATH% >> "%LOG_FILE_ABS%"
-exit /b 0
+echo   実行: "%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5
+"%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5 >nul 2>&1
+if not errorlevel 1 (
+    echo   7z圧縮バックアップ完了: %BACKUP_PATH%.7z
+    echo [%date% %time%] 7z圧縮バックアップ完了: %BACKUP_PATH%.7z >> "%LOG_FILE_ABS%"
+    endlocal
+    exit /b 0
+) else (
+    echo エラー: 7z圧縮に失敗しました
+    echo [%date% %time%] エラー: 7z圧縮失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
+    endlocal
+    exit /b 1
+)
 
 :CheckGitStatus
+setlocal
 echo   実行: git status --porcelain
 git status --porcelain >nul 2>&1
-if errorlevel 1 (
+if not errorlevel 1 (
+    endlocal
+    exit /b 0
+) else (
     echo エラー: git status が失敗しました
     echo [%date% %time%] エラー: git status失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
+    endlocal
     exit /b 1
 )
-exit /b 0
 
 :HandleChanges
+setlocal enabledelayedexpansion
 echo   実行: git diff --quiet
 git diff --quiet 2>nul
-if errorlevel 1 (
+if not errorlevel 1 (
+    echo 変更なし（スタッシュ不要）
+    endlocal
+    exit /b 0
+) else (
     echo 変更を検出しました。スタッシュを作成します...
-    rem PowerShellを使用してスタッシュメッセージ用の安全な日付時刻を生成
+    REM PowerShellを使用してスタッシュメッセージ用の安全な日付時刻を生成
     for /f "tokens=*" %%i in ('powershell -Command "Get-Date -Format 'yyyy-MM-dd HH:mm:ss'"') do set "STASH_DATETIME=%%i"
     echo   実行: git stash push -m "git-autocrlf-disable: !STASH_DATETIME!"
     git stash push -m "git-autocrlf-disable: !STASH_DATETIME!" >> "%LOG_FILE_ABS%" 2>&1
-    if errorlevel 1 (
+    if not errorlevel 1 (
+        echo [%date% %time%] スタッシュ作成完了 %REPO_NAME% >> "%LOG_FILE_ABS%"
+        endlocal
+        exit /b 0
+    ) else (
         echo エラー: スタッシュの作成に失敗しました
         echo [%date% %time%] エラー: スタッシュ作成失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
+        endlocal
         exit /b 1
     )
-    echo [%date% %time%] スタッシュ作成完了 %REPO_NAME% >> "%LOG_FILE_ABS%"
-) else (
-    echo 変更なし（スタッシュ不要）
 )
-exit /b 0
 
 :SetAutocrlfFalse
+setlocal
 echo   実行: git config core.autocrlf false
 git config core.autocrlf false >> "%LOG_FILE_ABS%" 2>&1
-if errorlevel 1 (
+if not errorlevel 1 (
+    endlocal
+    exit /b 0
+) else (
     echo エラー: autocrlf設定の変更に失敗しました
     echo [%date% %time%] エラー: autocrlf設定変更失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
+    endlocal
     exit /b 1
 )
-exit /b 0
 
 :ResetToHead
+setlocal
 echo   実行: git rm --cached -r .
 git rm --cached -r . >> "%LOG_FILE_ABS%" 2>&1
 echo   実行: git reset --hard HEAD
 git reset --hard HEAD >> "%LOG_FILE_ABS%" 2>&1
-if errorlevel 1 (
+if not errorlevel 1 (
+    REM ワーキングディレクトリをクリーンアップ
+    echo   実行: git clean -fd
+    git clean -fd >> "%LOG_FILE_ABS%" 2>&1
+
+    echo   完了: Gitキャッシュクリア・ワーキングディレクトリをHEADの状態に復元しました
+    echo [%date% %time%] キャッシュクリア・HEADリセット・クリーンアップ完了 %REPO_NAME% >> "%LOG_FILE_ABS%"
+    endlocal
+    exit /b 0
+) else (
     echo エラー: キャッシュクリア・HEADリセットに失敗しました
     echo [%date% %time%] エラー: キャッシュクリア・HEADリセット失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
+    endlocal
     exit /b 1
 )
 
-rem ワーキングディレクトリをクリーンアップ
-echo   実行: git clean -fd
-git clean -fd >> "%LOG_FILE_ABS%" 2>&1
-
-echo   完了: Gitキャッシュクリア・ワーキングディレクトリをHEADの状態に復元しました
-echo [%date% %time%] キャッシュクリア・HEADリセット・クリーンアップ完了 %REPO_NAME% >> "%LOG_FILE_ABS%"
-exit /b 0
-
-rem ========================================
-rem エラーハンドリング用ラベル
-rem ========================================
+REM ========================================
+REM エラーハンドリング用ラベル
+REM ========================================
 
 :ConfigError
 echo.
@@ -665,4 +733,5 @@ echo   - ネットワークドライブを避けてローカルドライブを使用
 echo   - ユーザー権限でアクセス可能なディレクトリかどうか確認
 echo.
 pause
+endlocal
 exit /b 1
