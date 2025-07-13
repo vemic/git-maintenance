@@ -5,15 +5,15 @@ set "LOG_DIR=%SCRIPT_DIR%log"
 set "BACKUP_DIR=%SCRIPT_DIR%backup"
 set "LOG_FILE=%LOG_DIR%\git-autocrlf-recovery_%date:~0,4%%date:~5,2%%date:~8,2%_%time:~0,2%%time:~3,2%%time:~6,2%.log"
 
-rem ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®æ™‚åˆ»ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆèª¿æ•´
+rem ƒƒOƒtƒ@ƒCƒ‹‚ÌŽžƒtƒH[ƒ}ƒbƒg’²®
 set "LOG_FILE=%LOG_FILE: =0%"
 
-rem åˆæœŸè¨­å®šã®æ¤œè¨¼
+rem ‰ŠúÝ’è‚ÌŒŸØ
 call :ValidateSetup || goto :SetupError32 >nul
 setlocal enabledelayedexpansion
 
 rem ========================================
-rem Git AutoCRLFè¨­å®šå¤‰æ›´ãƒ»å¾©æ—§ãƒãƒƒãƒ
+rem Git AutoCRLFÝ’è•ÏXE•œ‹Œƒoƒbƒ`
 rem ========================================
 
 set "SCRIPT_DIR=%~dp0"
@@ -23,21 +23,21 @@ set "LOG_DIR=%SCRIPT_DIR%log"
 set "BACKUP_DIR=%SCRIPT_DIR%backup"
 set "LOG_FILE=%LOG_DIR%\git-autocrlf-recovery_%date:~0,4%%date:~5,2%%date:~8,2%_%time:~0,2%%time:~3,2%%time:~6,2%.log"
 
-rem ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®æ™‚åˆ»ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆèª¿æ•´
+rem ƒƒOƒtƒ@ƒCƒ‹‚ÌŽžƒtƒH[ƒ}ƒbƒg’²®
 set "LOG_FILE=%LOG_FILE: =0%"
 
 echo ========================================
-echo Git AutoCRLF è¨­å®šå¤‰æ›´ãƒ»å¾©æ—§ãƒ„ãƒ¼ãƒ«
+echo Git AutoCRLF Ý’è•ÏXE•œ‹Œƒc[ƒ‹
 echo ========================================
 echo.
-echo å®Ÿè¡Œãƒ¢ãƒ¼ãƒ‰ã‚’é¸æŠžã—ã¦ãã ã•ã„:
-echo 1. AutoCRLFè¨­å®šå¤‰æ›´ãƒ»å¾©æ—§å®Ÿè¡Œ
-echo 2. ãƒªãƒã‚¸ãƒˆãƒªæƒ…å ±ç¢ºèª
-echo 3. ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ä¸€è¦§è¡¨ç¤º  
-echo 4. git-autocrlf-recoveryé–¢é€£ã‚¹ã‚¿ãƒƒã‚·ãƒ¥å¾©å…ƒ
-echo 5. çµ‚äº†
+echo ŽÀsƒ‚[ƒh‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢:
+echo 1. AutoCRLFÝ’è•ÏXE•œ‹ŒŽÀs
+echo 2. ƒŠƒ|ƒWƒgƒŠî•ñŠm”F
+echo 3. ƒXƒ^ƒbƒVƒ…ˆê——•\Ž¦  
+echo 4. git-autocrlf-recoveryŠÖ˜AƒXƒ^ƒbƒVƒ…•œŒ³
+echo 5. I—¹
 echo.
-set /p "MODE=é¸æŠžã—ã¦ãã ã•ã„ (1-5): "
+set /p "MODE=‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢ (1-5): "
 
 if "%MODE%"=="1" goto :MainProcess
 if "%MODE%"=="2" goto :CheckRepositories
@@ -45,75 +45,75 @@ if "%MODE%"=="3" goto :ListStashes
 if "%MODE%"=="4" goto :RestoreStashes
 if "%MODE%"=="5" goto :Exit
 
-echo ç„¡åŠ¹ãªé¸æŠžã§ã™ã€‚
+echo –³Œø‚È‘I‘ð‚Å‚·B
 pause
 exit /b 1
 
 :SetupError
 echo.
 echo ========================================
-echo ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã‚¨ãƒ©ãƒ¼
+echo ƒZƒbƒgƒAƒbƒvƒGƒ‰[
 echo ========================================
-echo åˆæœŸè¨­å®šã«å•é¡ŒãŒã‚ã‚Šã¾ã™ã€‚ä»¥ä¸‹ã‚’ç¢ºèªã—ã¦ãã ã•ã„ï¼š
+echo ‰ŠúÝ’è‚É–â‘è‚ª‚ ‚è‚Ü‚·BˆÈ‰º‚ðŠm”F‚µ‚Ä‚­‚¾‚³‚¢F
 echo.
-echo â–  ã“ã®ãƒ„ãƒ¼ãƒ«ãŒæä¾›ã™ã‚‹å¯¾å‡¦æ³•ï¼š
-echo   1. setup.bat ã‚’å®Ÿè¡Œã—ã¦åˆæœŸè¨­å®šã‚’å®Œäº†ã—ã¦ãã ã•ã„
-echo   2. conf\config.txt ã§ BASE_DIR ã‚’æ­£ã—ãè¨­å®šã—ã¦ãã ã•ã„
-echo   3. conf\repositories.txt ã«ãƒªãƒã‚¸ãƒˆãƒªåã‚’åˆ—æŒ™ã—ã¦ãã ã•ã„
+echo ¡ ‚±‚Ìƒc[ƒ‹‚ª’ñ‹Ÿ‚·‚é‘Îˆ–@F
+echo   1. setup.bat ‚ðŽÀs‚µ‚Ä‰ŠúÝ’è‚ðŠ®—¹‚µ‚Ä‚­‚¾‚³‚¢
+echo   2. conf\config.txt ‚Å BASE_DIR ‚ð³‚µ‚­Ý’è‚µ‚Ä‚­‚¾‚³‚¢
+echo   3. conf\repositories.txt ‚ÉƒŠƒ|ƒWƒgƒŠ–¼‚ð—ñ‹“‚µ‚Ä‚­‚¾‚³‚¢
 echo.
-echo â–  ä¸€èˆ¬çš„ãªãƒˆãƒ©ãƒ–ãƒ«ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ï¼š
-echo   - ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã«ã‚¹ãƒšãƒ¼ã‚¹ã‚„ç‰¹æ®Šæ–‡å­—ãŒå«ã¾ã‚Œã¦ã„ãªã„ã‹ç¢ºèª
-echo   - ãƒ‡ã‚£ã‚¹ã‚¯ã®ç©ºãå®¹é‡ãŒååˆ†ã«ã‚ã‚‹ã‹ç¢ºèª
-echo   - ã‚¦ã‚¤ãƒ«ã‚¹å¯¾ç­–ã‚½ãƒ•ãƒˆã«ã‚ˆã‚‹ãƒ–ãƒ­ãƒƒã‚¯ãŒãªã„ã‹ç¢ºèª
+echo ¡ ˆê”Ê“I‚Èƒgƒ‰ƒuƒ‹ƒVƒ…[ƒeƒBƒ“ƒOF
+echo   - ƒtƒ@ƒCƒ‹ƒpƒX‚ÉƒXƒy[ƒX‚â“ÁŽê•¶Žš‚ªŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢‚©Šm”F
+echo   - ƒfƒBƒXƒN‚Ì‹ó‚«—e—Ê‚ª\•ª‚É‚ ‚é‚©Šm”F
+echo   - ƒEƒCƒ‹ƒX‘Îôƒ\ƒtƒg‚É‚æ‚éƒuƒƒbƒN‚ª‚È‚¢‚©Šm”F
 echo.
 pause
 exit /b 1
 
 :Exit
-echo ãƒ„ãƒ¼ãƒ«ã‚’çµ‚äº†ã—ã¾ã™ã€‚
+echo ƒc[ƒ‹‚ðI—¹‚µ‚Ü‚·B
 exit /b 0
 
 :MainProcess
 call :LoadConfig || goto :ConfigError
 call :ValidateConfig || goto :ConfigError
 
-rem ãƒ­ã‚°ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¨ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ä½œæˆ
+rem ƒƒOƒfƒBƒŒƒNƒgƒŠ‚ÆƒoƒbƒNƒAƒbƒvƒfƒBƒŒƒNƒgƒŠ‚Ìì¬
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%"
 
-rem ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«åˆæœŸåŒ–
-echo [%date% %time%] Git AutoCRLF è¨­å®šå¤‰æ›´ãƒ»å¾©æ—§å‡¦ç†é–‹å§‹ > "%LOG_FILE%"
+rem ƒƒOƒtƒ@ƒCƒ‹‰Šú‰»
+echo [%date% %time%] Git AutoCRLF Ý’è•ÏXE•œ‹Œˆ—ŠJŽn > "%LOG_FILE%"
 
-echo ãƒ™ãƒ¼ã‚¹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª: %BASE_DIR%
-echo ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«: %LOG_FILE%
+echo ƒx[ƒXƒfƒBƒŒƒNƒgƒŠ: %BASE_DIR%
+echo ƒƒOƒtƒ@ƒCƒ‹: %LOG_FILE%
 echo.
 
-rem ãƒªãƒã‚¸ãƒˆãƒªãƒªã‚¹ãƒˆã®è¡¨ç¤º
-echo å¯¾è±¡ãƒªãƒã‚¸ãƒˆãƒª:
+rem ƒŠƒ|ƒWƒgƒŠƒŠƒXƒg‚Ì•\Ž¦
+echo ‘ÎÛƒŠƒ|ƒWƒgƒŠ:
 echo ----------------------------------------
 type "%REPO_LIST_FILE%"
 echo ----------------------------------------
 echo.
 
-set /p "CONFIRM=å‡¦ç†ã‚’å®Ÿè¡Œã—ã¾ã™ã‹ï¼Ÿ (Y/N): "
+set /p "CONFIRM=ˆ—‚ðŽÀs‚µ‚Ü‚·‚©H (Y/N): "
 if /i not "%CONFIRM%"=="Y" (
-    echo å‡¦ç†ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¾ã—ãŸã€‚
+    echo ˆ—‚ðƒLƒƒƒ“ƒZƒ‹‚µ‚Ü‚µ‚½B
     pause
     exit /b 0
 )
 
 echo.
-echo å‡¦ç†ã‚’é–‹å§‹ã—ã¾ã™...
+echo ˆ—‚ðŠJŽn‚µ‚Ü‚·...
 echo.
 
 set "SUCCESS_COUNT=0"
 set "ERROR_COUNT=0"
 
-rem ãƒªãƒã‚¸ãƒˆãƒªãƒªã‚¹ãƒˆã®å‡¦ç†
+rem ƒŠƒ|ƒWƒgƒŠƒŠƒXƒg‚Ìˆ—
 for /f "usebackq tokens=*" %%r in ("%REPO_LIST_FILE%") do (
     set "REPO_NAME=%%r"
     
-    rem ã‚³ãƒ¡ãƒ³ãƒˆè¡Œã‚„emptyè¡Œã‚’ã‚¹ã‚­ãƒƒãƒ—
+    rem ƒRƒƒ“ƒgs‚âemptys‚ðƒXƒLƒbƒv
     if not "!REPO_NAME!"=="" (
         if not "!REPO_NAME:~0,1!"=="#" (
             call :ProcessRepository "!REPO_NAME!"
@@ -123,94 +123,94 @@ for /f "usebackq tokens=*" %%r in ("%REPO_LIST_FILE%") do (
 
 echo.
 echo ========================================
-echo å‡¦ç†å®Œäº†
+echo ˆ—Š®—¹
 echo ========================================
-echo æˆåŠŸ: %SUCCESS_COUNT% ãƒªãƒã‚¸ãƒˆãƒª
-echo ã‚¨ãƒ©ãƒ¼: %ERROR_COUNT% ãƒªãƒã‚¸ãƒˆãƒª
-echo ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«: %LOG_FILE%
+echo ¬Œ÷: %SUCCESS_COUNT% ƒŠƒ|ƒWƒgƒŠ
+echo ƒGƒ‰[: %ERROR_COUNT% ƒŠƒ|ƒWƒgƒŠ
+echo ƒƒOƒtƒ@ƒCƒ‹: %LOG_FILE%
 echo.
 
 pause
 exit /b 0
 
 rem ========================================
-rem ãƒªãƒã‚¸ãƒˆãƒªå‡¦ç†é–¢æ•°
+rem ƒŠƒ|ƒWƒgƒŠˆ—ŠÖ”
 rem ========================================
 :ProcessRepository
 set "REPO_NAME=%~1"
 set "REPO_PATH=%BASE_DIR%\%REPO_NAME%"
 
 echo ----------------------------------------
-echo å‡¦ç†ä¸­: %REPO_NAME%
+echo ˆ—’†: %REPO_NAME%
 echo ----------------------------------------
 
-rem ãƒ­ã‚°å‡ºåŠ›
-echo [%date% %time%] å‡¦ç†é–‹å§‹: %REPO_NAME% >> "%LOG_FILE%"
+rem ƒƒOo—Í
+echo [%date% %time%] ˆ—ŠJŽn: %REPO_NAME% >> "%LOG_FILE%"
 
-rem ãƒªãƒã‚¸ãƒˆãƒªãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ç¢ºèª
+rem ƒŠƒ|ƒWƒgƒŠƒfƒBƒŒƒNƒgƒŠ‚ÌŠm”F
 if not exist "%REPO_PATH%" (
-    echo ã‚¨ãƒ©ãƒ¼: ãƒªãƒã‚¸ãƒˆãƒªãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: %REPO_PATH%
-    echo [%date% %time%] ã‚¨ãƒ©ãƒ¼: ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä¸å­˜åœ¨ %REPO_PATH% >> "%LOG_FILE%"
+    echo ƒGƒ‰[: ƒŠƒ|ƒWƒgƒŠƒfƒBƒŒƒNƒgƒŠ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: %REPO_PATH%
+    echo [%date% %time%] ƒGƒ‰[: ƒfƒBƒŒƒNƒgƒŠ•s‘¶Ý %REPO_PATH% >> "%LOG_FILE%"
     set /a ERROR_COUNT+=1
     goto :eof
 )
 
-rem .gitãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ç¢ºèª
+rem .gitƒfƒBƒŒƒNƒgƒŠ‚ÌŠm”F
 if not exist "%REPO_PATH%\.git" (
-    echo ã‚¨ãƒ©ãƒ¼: Gitãƒªãƒã‚¸ãƒˆãƒªã§ã¯ã‚ã‚Šã¾ã›ã‚“: %REPO_PATH%
-    echo [%date% %time%] ã‚¨ãƒ©ãƒ¼: Gitãƒªãƒã‚¸ãƒˆãƒªã§ã¯ãªã„ %REPO_PATH% >> "%LOG_FILE%"
+    echo ƒGƒ‰[: GitƒŠƒ|ƒWƒgƒŠ‚Å‚Í‚ ‚è‚Ü‚¹‚ñ: %REPO_PATH%
+    echo [%date% %time%] ƒGƒ‰[: GitƒŠƒ|ƒWƒgƒŠ‚Å‚Í‚È‚¢ %REPO_PATH% >> "%LOG_FILE%"
     set /a ERROR_COUNT+=1
     goto :eof
 )
 
 pushd "%REPO_PATH%"
 
-rem .gitãƒ•ã‚©ãƒ«ãƒ€ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ä½œæˆ
-echo 1. .gitãƒ•ã‚©ãƒ«ãƒ€ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ä½œæˆä¸­...
+rem .gitƒtƒHƒ‹ƒ_‚ÌƒoƒbƒNƒAƒbƒvì¬
+echo 1. .gitƒtƒHƒ‹ƒ_ƒoƒbƒNƒAƒbƒvì¬’†...
 set "BACKUP_TIMESTAMP=%date:~0,4%%date:~5,2%%date:~8,2%_%time:~0,2%%time:~3,2%%time:~6,2%"
 set "BACKUP_TIMESTAMP=%BACKUP_TIMESTAMP: =0%"
 set "GIT_BACKUP_DIR=%BACKUP_DIR%\%REPO_NAME%_%BACKUP_TIMESTAMP%"
 
 call :CreateBackup "%REPO_PATH%\.git" "%GIT_BACKUP_DIR%" || goto :BackupError
 
-rem ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç¢ºèª
-echo 2. ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç¢ºèªä¸­...
+rem Œ»Ý‚ÌƒXƒe[ƒ^ƒXŠm”F
+echo 2. ƒXƒe[ƒ^ƒXŠm”F’†...
 call :CheckGitStatus || goto :GitError
 
-rem å¤‰æ›´ãŒã‚ã‚‹å ´åˆã®ã‚¹ã‚¿ãƒƒã‚·ãƒ¥
-echo 3. å¤‰æ›´ç¢ºèªä¸­...
+rem •ÏX‚ª‚ ‚éê‡‚ÌƒXƒ^ƒbƒVƒ…
+echo 3. •ÏXŠm”F’†...
 call :HandleChanges || goto :StashError
 
-rem ç¾åœ¨ã®autocrlfè¨­å®šç¢ºèª
-echo 4. ç¾åœ¨ã®autocrlfè¨­å®šç¢ºèªä¸­...
+rem Œ»Ý‚ÌautocrlfÝ’èŠm”F
+echo 4. Œ»Ý‚ÌautocrlfÝ’èŠm”F’†...
 for /f "tokens=*" %%a in ('git config core.autocrlf 2^>nul') do set "CURRENT_AUTOCRLF=%%a"
-if not defined CURRENT_AUTOCRLF set "CURRENT_AUTOCRLF=æœªè¨­å®š"
-echo   ç¾åœ¨ã®è¨­å®š: %CURRENT_AUTOCRLF%
-echo [%date% %time%] ç¾åœ¨ã®autocrlfè¨­å®š: %CURRENT_AUTOCRLF% %REPO_NAME% >> "%LOG_FILE%"
+if not defined CURRENT_AUTOCRLF set "CURRENT_AUTOCRLF=–¢Ý’è"
+echo   Œ»Ý‚ÌÝ’è: %CURRENT_AUTOCRLF%
+echo [%date% %time%] Œ»Ý‚ÌautocrlfÝ’è: %CURRENT_AUTOCRLF% %REPO_NAME% >> "%LOG_FILE%"
 
-rem autocrlf=false ã«è¨­å®š
-echo 5. autocrlf=false ã«è¨­å®šä¸­...
+rem autocrlf=false ‚ÉÝ’è
+echo 5. autocrlf=false ‚ÉÝ’è’†...
 call :SetAutocrlfFalse || goto :ConfigChangeError
 
-rem Gitã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ã‚¯ãƒªã‚¢ã—ã¦ãƒ¯ãƒ¼ã‚­ãƒ³ã‚°ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’HEADã§ä¸Šæ›¸ã
-echo 6. Gitã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚¯ãƒªã‚¢ãƒ»HEADãƒªã‚»ãƒƒãƒˆä¸­...
+rem GitƒLƒƒƒbƒVƒ…‚ðƒNƒŠƒA‚µ‚Äƒ[ƒLƒ“ƒOƒfƒBƒŒƒNƒgƒŠ‚ðHEAD‚Åã‘‚«
+echo 6. GitƒLƒƒƒbƒVƒ…ƒNƒŠƒAEHEADƒŠƒZƒbƒg’†...
 call :ResetToHead || goto :ResetError
 
 popd
 
-echo 8. å®Œäº†: %REPO_NAME%
-echo [%date% %time%] å‡¦ç†å®Œäº†: %REPO_NAME% >> "%LOG_FILE%"
+echo 8. Š®—¹: %REPO_NAME%
+echo [%date% %time%] ˆ—Š®—¹: %REPO_NAME% >> "%LOG_FILE%"
 set /a SUCCESS_COUNT+=1
 
 goto :eof
 
 rem ========================================
-rem ãƒªãƒã‚¸ãƒˆãƒªæƒ…å ±ç¢ºèªæ©Ÿèƒ½
+rem ƒŠƒ|ƒWƒgƒŠî•ñŠm”F‹@”\
 rem ========================================
 :CheckRepositories
 echo.
 echo ========================================
-echo ãƒªãƒã‚¸ãƒˆãƒªæƒ…å ±ç¢ºèª
+echo ƒŠƒ|ƒWƒgƒŠî•ñŠm”F
 echo ========================================
 
 set "TOTAL_COUNT=0"
@@ -230,11 +230,11 @@ for /f "usebackq tokens=*" %%r in ("%REPO_LIST_FILE%") do (
 
 echo.
 echo ========================================
-echo é›†è¨ˆçµæžœ
+echo WŒvŒ‹‰Ê
 echo ========================================
-echo ç·æ•°: %TOTAL_COUNT% ãƒªãƒã‚¸ãƒˆãƒª
-echo æœ‰åŠ¹: %VALID_COUNT% ãƒªãƒã‚¸ãƒˆãƒª
-echo ã‚¨ãƒ©ãƒ¼: %CHECK_ERROR_COUNT% ãƒªãƒã‚¸ãƒˆãƒª
+echo ‘”: %TOTAL_COUNT% ƒŠƒ|ƒWƒgƒŠ
+echo —LŒø: %VALID_COUNT% ƒŠƒ|ƒWƒgƒŠ
+echo ƒGƒ‰[: %CHECK_ERROR_COUNT% ƒŠƒ|ƒWƒgƒŠ
 echo.
 pause
 exit /b 0
@@ -248,57 +248,57 @@ echo %REPO_NAME%
 echo ----------------------------------------
 
 if not exist "%REPO_PATH%" (
-    echo   çŠ¶æ…‹: ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¾ã›ã‚“
-    echo   ãƒ‘ã‚¹: %REPO_PATH%
+    echo   ó‘Ô: ƒfƒBƒŒƒNƒgƒŠ‚ª‘¶Ý‚µ‚Ü‚¹‚ñ
+    echo   ƒpƒX: %REPO_PATH%
     set /a CHECK_ERROR_COUNT+=1
     goto :eof
 )
 
 if not exist "%REPO_PATH%\.git" (
-    echo   çŠ¶æ…‹: Gitãƒªãƒã‚¸ãƒˆãƒªã§ã¯ã‚ã‚Šã¾ã›ã‚“
-    echo   ãƒ‘ã‚¹: %REPO_PATH%
+    echo   ó‘Ô: GitƒŠƒ|ƒWƒgƒŠ‚Å‚Í‚ ‚è‚Ü‚¹‚ñ
+    echo   ƒpƒX: %REPO_PATH%
     set /a CHECK_ERROR_COUNT+=1
     goto :eof
 )
 
 pushd "%REPO_PATH%"
 
-rem ç¾åœ¨ã®ãƒ–ãƒ©ãƒ³ãƒ
+rem Œ»Ý‚Ìƒuƒ‰ƒ“ƒ`
 for /f "tokens=*" %%b in ('git rev-parse --abbrev-ref HEAD 2^>nul') do set "CURRENT_BRANCH=%%b"
-if not defined CURRENT_BRANCH set "CURRENT_BRANCH=ä¸æ˜Ž"
+if not defined CURRENT_BRANCH set "CURRENT_BRANCH=•s–¾"
 
-rem autocrlfè¨­å®š
+rem autocrlfÝ’è
 for /f "tokens=*" %%a in ('git config core.autocrlf 2^>nul') do set "AUTOCRLF=%%a"
-if not defined AUTOCRLF set "AUTOCRLF=æœªè¨­å®š"
+if not defined AUTOCRLF set "AUTOCRLF=–¢Ý’è"
 
-rem å¤‰æ›´çŠ¶æ³
+rem •ÏXó‹µ
 git diff --quiet 2>nul
 if errorlevel 1 (
-    set "HAS_CHANGES=ã‚ã‚Š"
+    set "HAS_CHANGES=‚ ‚è"
 ) else (
-    set "HAS_CHANGES=ãªã—"
+    set "HAS_CHANGES=‚È‚µ"
 )
 
-rem ã‚¹ã‚¿ãƒƒã‚·ãƒ¥æ•°
+rem ƒXƒ^ƒbƒVƒ…”
 for /f "tokens=*" %%s in ('git stash list 2^>nul ^| find /c /v ""') do set "STASH_COUNT=%%s"
 if not defined STASH_COUNT set "STASH_COUNT=0"
 
-rem git-autocrlf-recoveryé–¢é€£ã‚¹ã‚¿ãƒƒã‚·ãƒ¥æ•°
+rem git-autocrlf-recoveryŠÖ˜AƒXƒ^ƒbƒVƒ…”
 for /f "tokens=*" %%t in ('git stash list 2^>nul ^| findstr /C:"git-autocrlf-recovery" ^| find /c /v ""') do set "RECOVERY_STASH_COUNT=%%t"
 if not defined RECOVERY_STASH_COUNT set "RECOVERY_STASH_COUNT=0"
 
 popd
 
-echo   çŠ¶æ…‹: æ­£å¸¸
-echo   ãƒ‘ã‚¹: %REPO_PATH%
-echo   ãƒ–ãƒ©ãƒ³ãƒ: %CURRENT_BRANCH%
+echo   ó‘Ô: ³í
+echo   ƒpƒX: %REPO_PATH%
+echo   ƒuƒ‰ƒ“ƒ`: %CURRENT_BRANCH%
 echo   autocrlf: %AUTOCRLF%
-echo   æœªä¿å­˜å¤‰æ›´: %HAS_CHANGES%
-echo   ã‚¹ã‚¿ãƒƒã‚·ãƒ¥æ•°: %STASH_COUNT% (recoveryé–¢é€£: %RECOVERY_STASH_COUNT%)
+echo   –¢•Û‘¶•ÏX: %HAS_CHANGES%
+echo   ƒXƒ^ƒbƒVƒ…”: %STASH_COUNT% (recoveryŠÖ˜A: %RECOVERY_STASH_COUNT%)
 
 set /a VALID_COUNT+=1
 
-rem å¤‰æ•°ã‚¯ãƒªã‚¢
+rem •Ï”ƒNƒŠƒA
 set "CURRENT_BRANCH="
 set "AUTOCRLF="
 set "HAS_CHANGES="
@@ -308,12 +308,12 @@ set "RECOVERY_STASH_COUNT="
 goto :eof
 
 rem ========================================
-rem ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ä¸€è¦§è¡¨ç¤ºæ©Ÿèƒ½
+rem ƒXƒ^ƒbƒVƒ…ˆê——•\Ž¦‹@”\
 rem ========================================
 :ListStashes
 echo.
 echo ========================================
-echo ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ä¸€è¦§
+echo ƒXƒ^ƒbƒVƒ…ˆê——
 echo ========================================
 
 for /f "usebackq tokens=*" %%r in ("%REPO_LIST_FILE%") do (
@@ -347,10 +347,10 @@ if errorlevel 1 (
     set /p STASH_COUNT=<temp_count.txt
     del temp_count.txt
     if !STASH_COUNT! gtr 0 (
-        echo ã‚¹ã‚¿ãƒƒã‚·ãƒ¥æ•°: !STASH_COUNT! ï¼ˆgit-autocrlf-recoveryé–¢é€£ãªã—ï¼‰
+        echo ƒXƒ^ƒbƒVƒ…”: !STASH_COUNT! igit-autocrlf-recoveryŠÖ˜A‚È‚µj
         git stash list 2>nul
     ) else (
-        echo ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ãªã—
+        echo ƒXƒ^ƒbƒVƒ…‚È‚µ
     )
 ) else (
     git stash list 2>nul
@@ -360,20 +360,20 @@ popd
 goto :eof
 
 rem ========================================
-rem git-autocrlf-recoveryé–¢é€£ã‚¹ã‚¿ãƒƒã‚·ãƒ¥å¾©å…ƒæ©Ÿèƒ½
+rem git-autocrlf-recoveryŠÖ˜AƒXƒ^ƒbƒVƒ…•œŒ³‹@”\
 rem ========================================
 :RestoreStashes
 echo.
 echo ========================================
-echo git-autocrlf-recoveryé–¢é€£ã‚¹ã‚¿ãƒƒã‚·ãƒ¥å¾©å…ƒ
+echo git-autocrlf-recoveryŠÖ˜AƒXƒ^ƒbƒVƒ…•œŒ³
 echo ========================================
 echo.
-echo æ³¨æ„: ã“ã®æ“ä½œã«ã‚ˆã‚Šã€git-autocrlf-recoveryã§ä½œæˆã•ã‚ŒãŸ
-echo ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ãŒå¾©å…ƒã•ã‚Œã¾ã™ã€‚ç¾åœ¨ã®å¤‰æ›´ã¯å¤±ã‚ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚
+echo ’ˆÓ: ‚±‚Ì‘€ì‚É‚æ‚èAgit-autocrlf-recovery‚Åì¬‚³‚ê‚½
+echo ƒXƒ^ƒbƒVƒ…‚ª•œŒ³‚³‚ê‚Ü‚·BŒ»Ý‚Ì•ÏX‚ÍŽ¸‚í‚ê‚é‰Â”\«‚ª‚ ‚è‚Ü‚·B
 echo.
-set /p "RESTORE_CONFIRM=å®Ÿè¡Œã—ã¾ã™ã‹ï¼Ÿ (Y/N): "
+set /p "RESTORE_CONFIRM=ŽÀs‚µ‚Ü‚·‚©H (Y/N): "
 if /i not "%RESTORE_CONFIRM%"=="Y" (
-    echo ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¾ã—ãŸã€‚
+    echo ƒLƒƒƒ“ƒZƒ‹‚µ‚Ü‚µ‚½B
     pause
     exit /b 0
 )
@@ -403,50 +403,50 @@ echo ----------------------------------------
 
 pushd "%REPO_PATH%"
 
-rem git-autocrlf-recoveryé–¢é€£ã®ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ã‚’æ¤œç´¢
+rem git-autocrlf-recoveryŠÖ˜A‚ÌƒXƒ^ƒbƒVƒ…‚ðŒŸõ
 for /f "tokens=1,* delims=:" %%a in ('git stash list 2^>nul ^| findstr /C:"git-autocrlf-recovery"') do (
     set "STASH_REF=%%a"
     set "STASH_MSG=%%b"
-    echo ã‚¹ã‚¿ãƒƒã‚·ãƒ¥å¾©å…ƒ: !STASH_REF! -!STASH_MSG!
+    echo ƒXƒ^ƒbƒVƒ…•œŒ³: !STASH_REF! -!STASH_MSG!
     git stash pop "!STASH_REF!" 2>nul
     if errorlevel 1 (
-        echo ã‚¨ãƒ©ãƒ¼: ã‚¹ã‚¿ãƒƒã‚·ãƒ¥å¾©å…ƒã«å¤±æ•—ã—ã¾ã—ãŸ
+        echo ƒGƒ‰[: ƒXƒ^ƒbƒVƒ…•œŒ³‚ÉŽ¸”s‚µ‚Ü‚µ‚½
     ) else (
-        echo æˆåŠŸ: ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ã‚’å¾©å…ƒã—ã¾ã—ãŸ
+        echo ¬Œ÷: ƒXƒ^ƒbƒVƒ…‚ð•œŒ³‚µ‚Ü‚µ‚½
     )
     goto :RestoreRepositoryStashEnd
 )
 
-echo git-autocrlf-recoveryé–¢é€£ã®ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“
+echo git-autocrlf-recoveryŠÖ˜A‚ÌƒXƒ^ƒbƒVƒ…‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ
 
 :RestoreRepositoryStashEnd
 popd
 goto :eof
 
 rem ========================================
-rem è¨­å®šã¨ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°é–¢æ•°
+rem Ý’è‚ÆƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒOŠÖ”
 rem ========================================
 
 :ValidateSetup
-rem ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä½œæˆ
+rem ƒfƒBƒŒƒNƒgƒŠì¬
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%"
 
-rem åŸºæœ¬ãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨ç¢ºèª
+rem Šî–{ƒtƒ@ƒCƒ‹‚Ì‘¶ÝŠm”F
 if not exist "%CONFIG_FILE%" (
-    echo ã‚¨ãƒ©ãƒ¼: è¨­å®šãƒ•ã‚¡ã‚¤ãƒ« %CONFIG_FILE% ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚
+    echo ƒGƒ‰[: Ý’èƒtƒ@ƒCƒ‹ %CONFIG_FILE% ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB
     exit /b 1
 )
 
 if not exist "%REPO_LIST_FILE%" (
-    echo ã‚¨ãƒ©ãƒ¼: ãƒªãƒã‚¸ãƒˆãƒªãƒªã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ« %REPO_LIST_FILE% ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚
+    echo ƒGƒ‰[: ƒŠƒ|ƒWƒgƒŠƒŠƒXƒgƒtƒ@ƒCƒ‹ %REPO_LIST_FILE% ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB
     exit /b 1
 )
 
 exit /b 0
 
 :LoadConfig
-rem è¨­å®šèª­ã¿è¾¼ã¿
+rem Ý’è“Ç‚Ýž‚Ý
 for /f "usebackq tokens=1,* delims==" %%a in ("%CONFIG_FILE%") do (
     if "%%a"=="BASE_DIR" set "BASE_DIR=%%b"
     if "%%a"=="SEVENZIP_PATH" set "SEVENZIP_PATH=%%b"
@@ -454,23 +454,23 @@ for /f "usebackq tokens=1,* delims==" %%a in ("%CONFIG_FILE%") do (
 exit /b 0
 
 :ValidateConfig
-rem BASE_DIRè¨­å®šç¢ºèª
+rem BASE_DIRÝ’èŠm”F
 if not defined BASE_DIR (
-    echo ã‚¨ãƒ©ãƒ¼: BASE_DIR ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚
+    echo ƒGƒ‰[: BASE_DIR ‚ªÝ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB
     exit /b 1
 )
 
-rem BASE_DIRã®å­˜åœ¨ç¢ºèª
+rem BASE_DIR‚Ì‘¶ÝŠm”F
 if not exist "%BASE_DIR%" (
-    echo ã‚¨ãƒ©ãƒ¼: BASE_DIR ã§æŒ‡å®šã•ã‚ŒãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¾ã›ã‚“: %BASE_DIR%
+    echo ƒGƒ‰[: BASE_DIR ‚ÅŽw’è‚³‚ê‚½ƒfƒBƒŒƒNƒgƒŠ‚ª‘¶Ý‚µ‚Ü‚¹‚ñ: %BASE_DIR%
     exit /b 1
 )
 
-rem 7z.exeã®å­˜åœ¨ç¢ºèªï¼ˆè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã®ã¿ï¼‰
+rem 7z.exe‚Ì‘¶ÝŠm”FiÝ’è‚³‚ê‚Ä‚¢‚éê‡‚Ì‚Ýj
 if defined SEVENZIP_PATH (
     if not exist "%SEVENZIP_PATH%" (
-        echo è­¦å‘Š: æŒ‡å®šã•ã‚ŒãŸ7z.exeãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: %SEVENZIP_PATH%
-        echo xcopyã«ã‚ˆã‚‹ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚
+        echo Œx: Žw’è‚³‚ê‚½7z.exe‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: %SEVENZIP_PATH%
+        echo xcopy‚É‚æ‚éƒoƒbƒNƒAƒbƒv‚ðŽg—p‚µ‚Ü‚·B
         set "SEVENZIP_PATH="
     )
 )
@@ -481,36 +481,36 @@ exit /b 0
 set "SOURCE_PATH=%~1"
 set "BACKUP_PATH=%~2"
 
-rem 7z.exeãŒä½¿ç”¨å¯èƒ½ãªå ´åˆã¯åœ§ç¸®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—
+rem 7z.exe‚ªŽg—p‰Â”\‚Èê‡‚Íˆ³kƒoƒbƒNƒAƒbƒv
 if defined SEVENZIP_PATH (
     "%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5 >nul 2>&1
     if not errorlevel 1 (
-        echo   7zåœ§ç¸®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å®Œäº†: %BACKUP_PATH%.7z
-        echo [%date% %time%] 7zåœ§ç¸®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å®Œäº†: %BACKUP_PATH%.7z >> "%LOG_FILE%"
+        echo   7zˆ³kƒoƒbƒNƒAƒbƒvŠ®—¹: %BACKUP_PATH%.7z
+        echo [%date% %time%] 7zˆ³kƒoƒbƒNƒAƒbƒvŠ®—¹: %BACKUP_PATH%.7z >> "%LOG_FILE%"
         exit /b 0
     ) else (
-        echo è­¦å‘Š: 7zåœ§ç¸®ã«å¤±æ•—ã—ã¾ã—ãŸã€‚xcopyã‚’ä½¿ç”¨ã—ã¾ã™ã€‚
-        echo [%date% %time%] è­¦å‘Š: 7zåœ§ç¸®å¤±æ•—ã€xcopyä½¿ç”¨ %REPO_NAME% >> "%LOG_FILE%"
+        echo Œx: 7zˆ³k‚ÉŽ¸”s‚µ‚Ü‚µ‚½Bxcopy‚ðŽg—p‚µ‚Ü‚·B
+        echo [%date% %time%] Œx: 7zˆ³kŽ¸”sAxcopyŽg—p %REPO_NAME% >> "%LOG_FILE%"
     )
 )
 
-rem xcopyã«ã‚ˆã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã‚³ãƒ”ãƒ¼
+rem xcopy‚É‚æ‚éƒtƒHƒ‹ƒ_ƒRƒs[
 xcopy "%SOURCE_PATH%" "%BACKUP_PATH%" /E /I /H /Y >nul 2>&1
 if errorlevel 1 (
-    echo ã‚¨ãƒ©ãƒ¼: .gitãƒ•ã‚©ãƒ«ãƒ€ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸ
-    echo [%date% %time%] ã‚¨ãƒ©ãƒ¼: .gitãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å¤±æ•— %REPO_NAME% >> "%LOG_FILE%"
+    echo ƒGƒ‰[: .gitƒtƒHƒ‹ƒ_‚ÌƒoƒbƒNƒAƒbƒv‚ÉŽ¸”s‚µ‚Ü‚µ‚½
+    echo [%date% %time%] ƒGƒ‰[: .gitƒoƒbƒNƒAƒbƒvŽ¸”s %REPO_NAME% >> "%LOG_FILE%"
     exit /b 1
 )
 
-echo   ãƒ•ã‚©ãƒ«ãƒ€ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å®Œäº†: %BACKUP_PATH%
-echo [%date% %time%] ãƒ•ã‚©ãƒ«ãƒ€ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å®Œäº†: %BACKUP_PATH% >> "%LOG_FILE%"
+echo   ƒtƒHƒ‹ƒ_ƒoƒbƒNƒAƒbƒvŠ®—¹: %BACKUP_PATH%
+echo [%date% %time%] ƒtƒHƒ‹ƒ_ƒoƒbƒNƒAƒbƒvŠ®—¹: %BACKUP_PATH% >> "%LOG_FILE%"
 exit /b 0
 
 :CheckGitStatus
 git status --porcelain >nul 2>&1
 if errorlevel 1 (
-    echo ã‚¨ãƒ©ãƒ¼: git status ãŒå¤±æ•—ã—ã¾ã—ãŸ
-    echo [%date% %time%] ã‚¨ãƒ©ãƒ¼: git statuså¤±æ•— %REPO_NAME% >> "%LOG_FILE%"
+    echo ƒGƒ‰[: git status ‚ªŽ¸”s‚µ‚Ü‚µ‚½
+    echo [%date% %time%] ƒGƒ‰[: git statusŽ¸”s %REPO_NAME% >> "%LOG_FILE%"
     exit /b 1
 )
 exit /b 0
@@ -518,24 +518,24 @@ exit /b 0
 :HandleChanges
 git diff --quiet 2>nul
 if errorlevel 1 (
-    echo å¤‰æ›´ã‚’æ¤œå‡ºã—ã¾ã—ãŸã€‚ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ã‚’ä½œæˆã—ã¾ã™...
+    echo •ÏX‚ðŒŸo‚µ‚Ü‚µ‚½BƒXƒ^ƒbƒVƒ…‚ðì¬‚µ‚Ü‚·...
     git stash push -m "git-autocrlf-recovery: %date% %time%" >> "%LOG_FILE%" 2>&1
     if errorlevel 1 (
-        echo ã‚¨ãƒ©ãƒ¼: ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ
-        echo [%date% %time%] ã‚¨ãƒ©ãƒ¼: ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ä½œæˆå¤±æ•— %REPO_NAME% >> "%LOG_FILE%"
+        echo ƒGƒ‰[: ƒXƒ^ƒbƒVƒ…‚Ìì¬‚ÉŽ¸”s‚µ‚Ü‚µ‚½
+        echo [%date% %time%] ƒGƒ‰[: ƒXƒ^ƒbƒVƒ…ì¬Ž¸”s %REPO_NAME% >> "%LOG_FILE%"
         exit /b 1
     )
-    echo [%date% %time%] ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ä½œæˆå®Œäº† %REPO_NAME% >> "%LOG_FILE%"
+    echo [%date% %time%] ƒXƒ^ƒbƒVƒ…ì¬Š®—¹ %REPO_NAME% >> "%LOG_FILE%"
 ) else (
-    echo å¤‰æ›´ãªã—ï¼ˆã‚¹ã‚¿ãƒƒã‚·ãƒ¥ä¸è¦ï¼‰
+    echo •ÏX‚È‚µiƒXƒ^ƒbƒVƒ…•s—vj
 )
 exit /b 0
 
 :SetAutocrlfFalse
 git config core.autocrlf false >> "%LOG_FILE%" 2>&1
 if errorlevel 1 (
-    echo ã‚¨ãƒ©ãƒ¼: autocrlfè¨­å®šã®å¤‰æ›´ã«å¤±æ•—ã—ã¾ã—ãŸ
-    echo [%date% %time%] ã‚¨ãƒ©ãƒ¼: autocrlfè¨­å®šå¤‰æ›´å¤±æ•— %REPO_NAME% >> "%LOG_FILE%"
+    echo ƒGƒ‰[: autocrlfÝ’è‚Ì•ÏX‚ÉŽ¸”s‚µ‚Ü‚µ‚½
+    echo [%date% %time%] ƒGƒ‰[: autocrlfÝ’è•ÏXŽ¸”s %REPO_NAME% >> "%LOG_FILE%"
     exit /b 1
 )
 exit /b 0
@@ -544,37 +544,37 @@ exit /b 0
 git rm --cached -r . >> "%LOG_FILE%" 2>&1
 git reset --hard HEAD >> "%LOG_FILE%" 2>&1
 if errorlevel 1 (
-    echo ã‚¨ãƒ©ãƒ¼: HEADãƒªã‚»ãƒƒãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ
-    echo [%date% %time%] ã‚¨ãƒ©ãƒ¼: HEADãƒªã‚»ãƒƒãƒˆå¤±æ•— %REPO_NAME% >> "%LOG_FILE%"
+    echo ƒGƒ‰[: HEADƒŠƒZƒbƒg‚ÉŽ¸”s‚µ‚Ü‚µ‚½
+    echo [%date% %time%] ƒGƒ‰[: HEADƒŠƒZƒbƒgŽ¸”s %REPO_NAME% >> "%LOG_FILE%"
     exit /b 1
 )
 
-rem ãƒ¯ãƒ¼ã‚­ãƒ³ã‚°ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
+rem ƒ[ƒLƒ“ƒOƒfƒBƒŒƒNƒgƒŠ‚ðƒNƒŠ[ƒ“ƒAƒbƒv
 git clean -fd >> "%LOG_FILE%" 2>&1
 
-echo   å®Œäº†: ãƒ¯ãƒ¼ã‚­ãƒ³ã‚°ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’HEADã®çŠ¶æ…‹ã«å¾©å…ƒã—ã¾ã—ãŸ
-echo [%date% %time%] HEADãƒªã‚»ãƒƒãƒˆãƒ»ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—å®Œäº† %REPO_NAME% >> "%LOG_FILE%"
+echo   Š®—¹: ƒ[ƒLƒ“ƒOƒfƒBƒŒƒNƒgƒŠ‚ðHEAD‚Ìó‘Ô‚É•œŒ³‚µ‚Ü‚µ‚½
+echo [%date% %time%] HEADƒŠƒZƒbƒgEƒNƒŠ[ƒ“ƒAƒbƒvŠ®—¹ %REPO_NAME% >> "%LOG_FILE%"
 exit /b 0
 
 rem ========================================
-rem ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°ç”¨ãƒ©ãƒ™ãƒ«
+rem ƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO—pƒ‰ƒxƒ‹
 rem ========================================
 
 :ConfigError
 echo.
 echo ========================================
-echo è¨­å®šã‚¨ãƒ©ãƒ¼
+echo Ý’èƒGƒ‰[
 echo ========================================
 echo.
-echo â–  ã“ã®ãƒ„ãƒ¼ãƒ«ãŒæä¾›ã™ã‚‹å¯¾å‡¦æ³•ï¼š
-echo   1. conf\config.txt ã§ BASE_DIR ã‚’æ­£ã—ãè¨­å®šã—ã¦ãã ã•ã„
-echo   2. æŒ‡å®šã—ãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã™ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¦ãã ã•ã„
-echo   3. setup.bat ã‚’å†å®Ÿè¡Œã—ã¦è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œã‚Šç›´ã—ã¦ãã ã•ã„
+echo ¡ ‚±‚Ìƒc[ƒ‹‚ª’ñ‹Ÿ‚·‚é‘Îˆ–@F
+echo   1. conf\config.txt ‚Å BASE_DIR ‚ð³‚µ‚­Ý’è‚µ‚Ä‚­‚¾‚³‚¢
+echo   2. Žw’è‚µ‚½ƒfƒBƒŒƒNƒgƒŠ‚ª‘¶Ý‚·‚é‚±‚Æ‚ðŠm”F‚µ‚Ä‚­‚¾‚³‚¢
+echo   3. setup.bat ‚ðÄŽÀs‚µ‚ÄÝ’èƒtƒ@ƒCƒ‹‚ðì‚è’¼‚µ‚Ä‚­‚¾‚³‚¢
 echo.
-echo â–  ä¸€èˆ¬çš„ãªãƒˆãƒ©ãƒ–ãƒ«ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ï¼š
-echo   - ãƒ‘ã‚¹åã«2ãƒã‚¤ãƒˆæ–‡å­—ã‚„ç‰¹æ®Šæ–‡å­—ãŒå«ã¾ã‚Œã¦ã„ãªã„ã‹ç¢ºèª
-echo   - ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ‰ãƒ©ã‚¤ãƒ–ã‚’é¿ã‘ã¦ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‰ãƒ©ã‚¤ãƒ–ã‚’ä½¿ç”¨
-echo   - ãƒ¦ãƒ¼ã‚¶ãƒ¼æ¨©é™ã§ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ãªãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ã©ã†ã‹ç¢ºèª
+echo ¡ ˆê”Ê“I‚Èƒgƒ‰ƒuƒ‹ƒVƒ…[ƒeƒBƒ“ƒOF
+echo   - ƒpƒX–¼‚É2ƒoƒCƒg•¶Žš‚â“ÁŽê•¶Žš‚ªŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢‚©Šm”F
+echo   - ƒlƒbƒgƒ[ƒNƒhƒ‰ƒCƒu‚ð”ð‚¯‚Äƒ[ƒJƒ‹ƒhƒ‰ƒCƒu‚ðŽg—p
+echo   - ƒ†[ƒU[Œ ŒÀ‚ÅƒAƒNƒZƒX‰Â”\‚ÈƒfƒBƒŒƒNƒgƒŠ‚©‚Ç‚¤‚©Šm”F
 echo.
 pause
 exit /b 1
@@ -582,19 +582,19 @@ exit /b 1
 :BackupError
 echo.
 echo ========================================
-echo ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚¨ãƒ©ãƒ¼
+echo ƒoƒbƒNƒAƒbƒvƒGƒ‰[
 echo ========================================
-echo ãƒªãƒã‚¸ãƒˆãƒª: %REPO_NAME%
+echo ƒŠƒ|ƒWƒgƒŠ: %REPO_NAME%
 echo.
-echo â–  ã“ã®ãƒ„ãƒ¼ãƒ«ãŒæä¾›ã™ã‚‹å¯¾å‡¦æ³•ï¼š
-echo   1. ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚¨ãƒ©ãƒ¼ã®ãŸã‚å‡¦ç†ã‚’ä¸­æ­¢ã—ã¾ã—ãŸ
-echo   2. ãƒ‡ã‚£ã‚¹ã‚¯å®¹é‡ã‚’ç¢ºèªã—ã¦ãã ã•ã„
-echo   3. 7z.exeã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯ãƒ‘ã‚¹ã‚’ç¢ºèªã—ã¦ãã ã•ã„
+echo ¡ ‚±‚Ìƒc[ƒ‹‚ª’ñ‹Ÿ‚·‚é‘Îˆ–@F
+echo   1. ƒoƒbƒNƒAƒbƒvƒGƒ‰[‚Ì‚½‚ßˆ—‚ð’†Ž~‚µ‚Ü‚µ‚½
+echo   2. ƒfƒBƒXƒN—e—Ê‚ðŠm”F‚µ‚Ä‚­‚¾‚³‚¢
+echo   3. 7z.exe‚ðŽg—p‚·‚éê‡‚ÍƒpƒX‚ðŠm”F‚µ‚Ä‚­‚¾‚³‚¢
 echo.
-echo â–  ä¸€èˆ¬çš„ãªãƒˆãƒ©ãƒ–ãƒ«ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ï¼š
-echo   - ãƒ‡ã‚£ã‚¹ã‚¯ã®ç©ºãå®¹é‡ãŒååˆ†ã«ã‚ã‚‹ã‹ç¢ºèª
-echo   - ã‚¦ã‚¤ãƒ«ã‚¹å¯¾ç­–ã‚½ãƒ•ãƒˆã«ã‚ˆã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ãƒ–ãƒ­ãƒƒã‚¯ãŒãªã„ã‹ç¢ºèª
-echo   - ç®¡ç†è€…æ¨©é™ã§å®Ÿè¡Œã—ã¦ã¿ã‚‹
+echo ¡ ˆê”Ê“I‚Èƒgƒ‰ƒuƒ‹ƒVƒ…[ƒeƒBƒ“ƒOF
+echo   - ƒfƒBƒXƒN‚Ì‹ó‚«—e—Ê‚ª\•ª‚É‚ ‚é‚©Šm”F
+echo   - ƒEƒCƒ‹ƒX‘Îôƒ\ƒtƒg‚É‚æ‚éƒtƒ@ƒCƒ‹ƒuƒƒbƒN‚ª‚È‚¢‚©Šm”F
+echo   - ŠÇ—ŽÒŒ ŒÀ‚ÅŽÀs‚µ‚Ä‚Ý‚é
 echo.
 popd
 set /a ERROR_COUNT+=1
@@ -604,19 +604,19 @@ goto :eof
 :GitError
 echo.
 echo ========================================
-echo Gitæ“ä½œã‚¨ãƒ©ãƒ¼
+echo Git‘€ìƒGƒ‰[
 echo ========================================
-echo ãƒªãƒã‚¸ãƒˆãƒª: %REPO_NAME%
+echo ƒŠƒ|ƒWƒgƒŠ: %REPO_NAME%
 echo.
-echo â–  ã“ã®ãƒ„ãƒ¼ãƒ«ãŒæä¾›ã™ã‚‹å¯¾å‡¦æ³•ï¼š
-echo   1. Gitãƒªãƒã‚¸ãƒˆãƒªãŒç ´æã—ã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™
-echo   2. ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‹ã‚‰.gitãƒ•ã‚©ãƒ«ãƒ€ã‚’å¾©æ—§ã—ã¦ãã ã•ã„
-echo   3. restore-git.bat ã‚’ä½¿ç”¨ã—ã¦å¾©æ—§ã‚’è©¦ã—ã¦ãã ã•ã„
+echo ¡ ‚±‚Ìƒc[ƒ‹‚ª’ñ‹Ÿ‚·‚é‘Îˆ–@F
+echo   1. GitƒŠƒ|ƒWƒgƒŠ‚ª”j‘¹‚µ‚Ä‚¢‚é‰Â”\«‚ª‚ ‚è‚Ü‚·
+echo   2. ƒoƒbƒNƒAƒbƒv‚©‚ç.gitƒtƒHƒ‹ƒ_‚ð•œ‹Œ‚µ‚Ä‚­‚¾‚³‚¢
+echo   3. restore-git.bat ‚ðŽg—p‚µ‚Ä•œ‹Œ‚ðŽŽ‚µ‚Ä‚­‚¾‚³‚¢
 echo.
-echo â–  ä¸€èˆ¬çš„ãªãƒˆãƒ©ãƒ–ãƒ«ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ï¼š
-echo   - git fsck ã§ãƒªãƒã‚¸ãƒˆãƒªã®æ•´åˆæ€§ã‚’ç¢ºèª
-echo   - ãƒªãƒ¢ãƒ¼ãƒˆãƒªãƒã‚¸ãƒˆãƒªã‹ã‚‰å†ã‚¯ãƒ­ãƒ¼ãƒ³ã‚’æ¤œè¨Ž
-echo   - .git/index ãƒ•ã‚¡ã‚¤ãƒ«ã®å‰Šé™¤ã‚’è©¦ã™
+echo ¡ ˆê”Ê“I‚Èƒgƒ‰ƒuƒ‹ƒVƒ…[ƒeƒBƒ“ƒOF
+echo   - git fsck ‚ÅƒŠƒ|ƒWƒgƒŠ‚Ì®‡«‚ðŠm”F
+echo   - ƒŠƒ‚[ƒgƒŠƒ|ƒWƒgƒŠ‚©‚çÄƒNƒ[ƒ“‚ðŒŸ“¢
+echo   - .git/index ƒtƒ@ƒCƒ‹‚Ìíœ‚ðŽŽ‚·
 echo.
 popd
 set /a ERROR_COUNT+=1
@@ -626,19 +626,19 @@ goto :eof
 :StashError
 echo.
 echo ========================================
-echo ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ã‚¨ãƒ©ãƒ¼
+echo ƒXƒ^ƒbƒVƒ…ƒGƒ‰[
 echo ========================================
-echo ãƒªãƒã‚¸ãƒˆãƒª: %REPO_NAME%
+echo ƒŠƒ|ƒWƒgƒŠ: %REPO_NAME%
 echo.
-echo â–  ã“ã®ãƒ„ãƒ¼ãƒ«ãŒæä¾›ã™ã‚‹å¯¾å‡¦æ³•ï¼š
-echo   1. æœªã‚³ãƒŸãƒƒãƒˆã®å¤‰æ›´ã‚’ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ã§ãã¾ã›ã‚“ã§ã—ãŸ
-echo   2. æ‰‹å‹•ã§ã‚³ãƒŸãƒƒãƒˆã¾ãŸã¯å¤‰æ›´ã‚’ç ´æ£„ã—ã¦ã‹ã‚‰å†å®Ÿè¡Œã—ã¦ãã ã•ã„
-echo   3. git stash list ã§ã‚¹ã‚¿ãƒƒã‚·ãƒ¥ã®çŠ¶æ³ã‚’ç¢ºèªã—ã¦ãã ã•ã„
+echo ¡ ‚±‚Ìƒc[ƒ‹‚ª’ñ‹Ÿ‚·‚é‘Îˆ–@F
+echo   1. –¢ƒRƒ~ƒbƒg‚Ì•ÏX‚ðƒXƒ^ƒbƒVƒ…‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½
+echo   2. Žè“®‚ÅƒRƒ~ƒbƒg‚Ü‚½‚Í•ÏX‚ð”jŠü‚µ‚Ä‚©‚çÄŽÀs‚µ‚Ä‚­‚¾‚³‚¢
+echo   3. git stash list ‚ÅƒXƒ^ƒbƒVƒ…‚Ìó‹µ‚ðŠm”F‚µ‚Ä‚­‚¾‚³‚¢
 echo.
-echo â–  ä¸€èˆ¬çš„ãªãƒˆãƒ©ãƒ–ãƒ«ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ï¼š
-echo   - git status ã§ç¾åœ¨ã®çŠ¶æ…‹ã‚’ç¢ºèª
-echo   - å¤§ããªãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ãŒå«ã¾ã‚Œã¦ã„ãªã„ã‹ç¢ºèª
-echo   - ãƒ‡ã‚£ã‚¹ã‚¯å®¹é‡ãŒä¸è¶³ã—ã¦ã„ãªã„ã‹ç¢ºèª
+echo ¡ ˆê”Ê“I‚Èƒgƒ‰ƒuƒ‹ƒVƒ…[ƒeƒBƒ“ƒOF
+echo   - git status ‚ÅŒ»Ý‚Ìó‘Ô‚ðŠm”F
+echo   - ‘å‚«‚ÈƒoƒCƒiƒŠƒtƒ@ƒCƒ‹‚ªŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢‚©Šm”F
+echo   - ƒfƒBƒXƒN—e—Ê‚ª•s‘«‚µ‚Ä‚¢‚È‚¢‚©Šm”F
 echo.
 popd
 set /a ERROR_COUNT+=1
@@ -648,19 +648,19 @@ goto :eof
 :ConfigChangeError
 echo.
 echo ========================================
-echo è¨­å®šå¤‰æ›´ã‚¨ãƒ©ãƒ¼
+echo Ý’è•ÏXƒGƒ‰[
 echo ========================================
-echo ãƒªãƒã‚¸ãƒˆãƒª: %REPO_NAME%
+echo ƒŠƒ|ƒWƒgƒŠ: %REPO_NAME%
 echo.
-echo â–  ã“ã®ãƒ„ãƒ¼ãƒ«ãŒæä¾›ã™ã‚‹å¯¾å‡¦æ³•ï¼š
-echo   1. git config core.autocrlf ã®è¨­å®šå¤‰æ›´ã«å¤±æ•—ã—ã¾ã—ãŸ
-echo   2. .git/config ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¨©é™ã‚’ç¢ºèªã—ã¦ãã ã•ã„
-echo   3. æ‰‹å‹•ã§ã€Œgit config core.autocrlf falseã€ã‚’å®Ÿè¡Œã—ã¦ãã ã•ã„
+echo ¡ ‚±‚Ìƒc[ƒ‹‚ª’ñ‹Ÿ‚·‚é‘Îˆ–@F
+echo   1. git config core.autocrlf ‚ÌÝ’è•ÏX‚ÉŽ¸”s‚µ‚Ü‚µ‚½
+echo   2. .git/config ƒtƒ@ƒCƒ‹‚ÌŒ ŒÀ‚ðŠm”F‚µ‚Ä‚­‚¾‚³‚¢
+echo   3. Žè“®‚Åugit config core.autocrlf falsev‚ðŽÀs‚µ‚Ä‚­‚¾‚³‚¢
 echo.
-echo â–  ä¸€èˆ¬çš„ãªãƒˆãƒ©ãƒ–ãƒ«ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ï¼š
-echo   - .git/config ãƒ•ã‚¡ã‚¤ãƒ«ãŒèª­ã¿å–ã‚Šå°‚ç”¨ã«ãªã£ã¦ã„ãªã„ã‹ç¢ºèª
-echo   - ãƒªãƒã‚¸ãƒˆãƒªãŒç ´æã—ã¦ã„ãªã„ã‹ git fsck ã§ç¢ºèª
-echo   - ç®¡ç†è€…æ¨©é™ã§å®Ÿè¡Œã—ã¦ã¿ã‚‹
+echo ¡ ˆê”Ê“I‚Èƒgƒ‰ƒuƒ‹ƒVƒ…[ƒeƒBƒ“ƒOF
+echo   - .git/config ƒtƒ@ƒCƒ‹‚ª“Ç‚ÝŽæ‚èê—p‚É‚È‚Á‚Ä‚¢‚È‚¢‚©Šm”F
+echo   - ƒŠƒ|ƒWƒgƒŠ‚ª”j‘¹‚µ‚Ä‚¢‚È‚¢‚© git fsck ‚ÅŠm”F
+echo   - ŠÇ—ŽÒŒ ŒÀ‚ÅŽÀs‚µ‚Ä‚Ý‚é
 echo.
 popd
 set /a ERROR_COUNT+=1
@@ -670,19 +670,19 @@ goto :eof
 :ResetError
 echo.
 echo ========================================
-echo ãƒªã‚»ãƒƒãƒˆã‚¨ãƒ©ãƒ¼
+echo ƒŠƒZƒbƒgƒGƒ‰[
 echo ========================================
-echo ãƒªãƒã‚¸ãƒˆãƒª: %REPO_NAME%
+echo ƒŠƒ|ƒWƒgƒŠ: %REPO_NAME%
 echo.
-echo â–  ã“ã®ãƒ„ãƒ¼ãƒ«ãŒæä¾›ã™ã‚‹å¯¾å‡¦æ³•ï¼š
-echo   1. git reset --hard HEAD ã«å¤±æ•—ã—ã¾ã—ãŸ
-echo   2. ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‹ã‚‰.gitãƒ•ã‚©ãƒ«ãƒ€ã‚’å¾©æ—§ã—ã¦ãã ã•ã„
-echo   3. restore-git.bat ã‚’ä½¿ç”¨ã—ã¦å¾©æ—§ã‚’è©¦ã—ã¦ãã ã•ã„
+echo ¡ ‚±‚Ìƒc[ƒ‹‚ª’ñ‹Ÿ‚·‚é‘Îˆ–@F
+echo   1. git reset --hard HEAD ‚ÉŽ¸”s‚µ‚Ü‚µ‚½
+echo   2. ƒoƒbƒNƒAƒbƒv‚©‚ç.gitƒtƒHƒ‹ƒ_‚ð•œ‹Œ‚µ‚Ä‚­‚¾‚³‚¢
+echo   3. restore-git.bat ‚ðŽg—p‚µ‚Ä•œ‹Œ‚ðŽŽ‚µ‚Ä‚­‚¾‚³‚¢
 echo.
-echo â–  ä¸€èˆ¬çš„ãªãƒˆãƒ©ãƒ–ãƒ«ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ï¼š
-echo   - git fsck ã§ãƒªãƒã‚¸ãƒˆãƒªã®æ•´åˆæ€§ã‚’ç¢ºèª
-echo   - .git/index ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã—ã¦ã‹ã‚‰ git reset ã‚’è©¦ã™
-echo   - ãƒªãƒ¢ãƒ¼ãƒˆãƒªãƒã‚¸ãƒˆãƒªã‹ã‚‰å†ã‚¯ãƒ­ãƒ¼ãƒ³ã‚’æ¤œè¨Ž
+echo ¡ ˆê”Ê“I‚Èƒgƒ‰ƒuƒ‹ƒVƒ…[ƒeƒBƒ“ƒOF
+echo   - git fsck ‚ÅƒŠƒ|ƒWƒgƒŠ‚Ì®‡«‚ðŠm”F
+echo   - .git/index ƒtƒ@ƒCƒ‹‚ðíœ‚µ‚Ä‚©‚ç git reset ‚ðŽŽ‚·
+echo   - ƒŠƒ‚[ƒgƒŠƒ|ƒWƒgƒŠ‚©‚çÄƒNƒ[ƒ“‚ðŒŸ“¢
 echo.
 popd
 set /a ERROR_COUNT+=1

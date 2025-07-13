@@ -3,7 +3,7 @@ chcp 932 >nul
 setlocal enabledelayedexpansion
 
 echo ========================================
-echo .git ãƒ•ã‚©ãƒ«ãƒ€å¾©æ—§ãƒ„ãƒ¼ãƒ«
+echo .git ƒtƒHƒ‹ƒ_•œ‹Œƒc[ƒ‹
 echo ========================================
 echo.
 
@@ -11,10 +11,10 @@ set "SCRIPT_DIR=%~dp0"
 set "BACKUP_DIR=%SCRIPT_DIR%backup"
 set "CONFIG_FILE=%SCRIPT_DIR%conf\config.txt"
 
-rem è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
+rem Ý’èƒtƒ@ƒCƒ‹‚Ì“Ç‚Ýž‚Ý
 if not exist "%CONFIG_FILE%" (
-    echo ã‚¨ãƒ©ãƒ¼: è¨­å®šãƒ•ã‚¡ã‚¤ãƒ« %CONFIG_FILE% ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚
-    echo setup.bat ã‚’å…ˆã«å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚
+    echo ƒGƒ‰[: Ý’èƒtƒ@ƒCƒ‹ %CONFIG_FILE% ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB
+    echo setup.bat ‚ðæ‚ÉŽÀs‚µ‚Ä‚­‚¾‚³‚¢B
     pause
     exit /b 1
 )
@@ -24,38 +24,38 @@ for /f "usebackq tokens=1,* delims==" %%a in ("%CONFIG_FILE%") do (
 )
 
 if not defined BASE_DIR (
-    echo ã‚¨ãƒ©ãƒ¼: BASE_DIR ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚
+    echo ƒGƒ‰[: BASE_DIR ‚ªÝ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB
     pause
     exit /b 1
 )
 
-rem ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ç¢ºèª
+rem ƒoƒbƒNƒAƒbƒvƒfƒBƒŒƒNƒgƒŠ‚ÌŠm”F
 if not exist "%BACKUP_DIR%" (
-    echo ã‚¨ãƒ©ãƒ¼: ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: %BACKUP_DIR%
-    echo ã¾ãšãƒ¡ã‚¤ãƒ³å‡¦ç†ã‚’å®Ÿè¡Œã—ã¦ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã—ã¦ãã ã•ã„ã€‚
+    echo ƒGƒ‰[: ƒoƒbƒNƒAƒbƒvƒfƒBƒŒƒNƒgƒŠ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: %BACKUP_DIR%
+    echo ‚Ü‚¸ƒƒCƒ“ˆ—‚ðŽÀs‚µ‚ÄƒoƒbƒNƒAƒbƒv‚ðì¬‚µ‚Ä‚­‚¾‚³‚¢B
     pause
     exit /b 1
 )
 
-echo ãƒ™ãƒ¼ã‚¹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª: %BASE_DIR%
-echo ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª: %BACKUP_DIR%
+echo ƒx[ƒXƒfƒBƒŒƒNƒgƒŠ: %BASE_DIR%
+echo ƒoƒbƒNƒAƒbƒvƒfƒBƒŒƒNƒgƒŠ: %BACKUP_DIR%
 echo.
 
-echo åˆ©ç”¨å¯èƒ½ãªãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—:
+echo —˜—p‰Â”\‚ÈƒoƒbƒNƒAƒbƒv:
 echo ----------------------------------------
 dir /b "%BACKUP_DIR%" 2>nul | findstr /R ".*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_[0-9][0-9][0-9][0-9][0-9][0-9]"
 echo ----------------------------------------
 echo.
 
-set /p "BACKUP_FOLDER=å¾©æ—§ã—ãŸã„ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚©ãƒ«ãƒ€åã‚’å…¥åŠ›ã—ã¦ãã ã•ã„: "
+set /p "BACKUP_FOLDER=•œ‹Œ‚µ‚½‚¢ƒoƒbƒNƒAƒbƒvƒtƒHƒ‹ƒ_–¼‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢: "
 
 if not exist "%BACKUP_DIR%\%BACKUP_FOLDER%" (
-    echo ã‚¨ãƒ©ãƒ¼: æŒ‡å®šã•ã‚ŒãŸãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: %BACKUP_FOLDER%
+    echo ƒGƒ‰[: Žw’è‚³‚ê‚½ƒoƒbƒNƒAƒbƒv‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: %BACKUP_FOLDER%
     pause
     exit /b 1
 )
 
-rem ãƒªãƒã‚¸ãƒˆãƒªåã‚’æŠ½å‡ºï¼ˆãƒ•ã‚©ãƒ«ãƒ€åã‹ã‚‰æ—¥æ™‚éƒ¨åˆ†ã‚’é™¤åŽ»ï¼‰
+rem ƒŠƒ|ƒWƒgƒŠ–¼‚ð’ŠoiƒtƒHƒ‹ƒ_–¼‚©‚ç“úŽž•”•ª‚ðœ‹Žj
 for /f "tokens=1,2 delims=_" %%a in ("%BACKUP_FOLDER%") do (
     set "REPO_NAME=%%a"
 )
@@ -63,52 +63,52 @@ for /f "tokens=1,2 delims=_" %%a in ("%BACKUP_FOLDER%") do (
 set "TARGET_REPO=%BASE_DIR%\%REPO_NAME%"
 
 echo.
-echo å¾©æ—§å¯¾è±¡ãƒªãƒã‚¸ãƒˆãƒª: %REPO_NAME%
-echo ãƒªãƒã‚¸ãƒˆãƒªãƒ‘ã‚¹: %TARGET_REPO%
-echo ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚½ãƒ¼ã‚¹: %BACKUP_DIR%\%BACKUP_FOLDER%
+echo •œ‹Œ‘ÎÛƒŠƒ|ƒWƒgƒŠ: %REPO_NAME%
+echo ƒŠƒ|ƒWƒgƒŠƒpƒX: %TARGET_REPO%
+echo ƒoƒbƒNƒAƒbƒvƒ\[ƒX: %BACKUP_DIR%\%BACKUP_FOLDER%
 echo.
 
 if not exist "%TARGET_REPO%" (
-    echo ã‚¨ãƒ©ãƒ¼: å¯¾è±¡ãƒªãƒã‚¸ãƒˆãƒªãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: %TARGET_REPO%
+    echo ƒGƒ‰[: ‘ÎÛƒŠƒ|ƒWƒgƒŠ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: %TARGET_REPO%
     pause
     exit /b 1
 )
 
-echo è­¦å‘Š: ã“ã®æ“ä½œã«ã‚ˆã‚Šç¾åœ¨ã®.gitãƒ•ã‚©ãƒ«ãƒ€ãŒç½®ãæ›ãˆã‚‰ã‚Œã¾ã™ã€‚
-echo ç¾åœ¨ã®.gitãƒ•ã‚©ãƒ«ãƒ€ã¯ .git_replaced_YYYYMMDDHHMMSS ã¨ã—ã¦é€€é¿ã•ã‚Œã¾ã™ã€‚
+echo Œx: ‚±‚Ì‘€ì‚É‚æ‚èŒ»Ý‚Ì.gitƒtƒHƒ‹ƒ_‚ª’u‚«Š·‚¦‚ç‚ê‚Ü‚·B
+echo Œ»Ý‚Ì.gitƒtƒHƒ‹ƒ_‚Í .git_replaced_YYYYMMDDHHMMSS ‚Æ‚µ‚Ä‘Þ”ð‚³‚ê‚Ü‚·B
 echo.
-set /p "CONFIRM=å¾©æ—§ã‚’å®Ÿè¡Œã—ã¾ã™ã‹ï¼Ÿ (Y/N): "
+set /p "CONFIRM=•œ‹Œ‚ðŽÀs‚µ‚Ü‚·‚©H (Y/N): "
 if /i not "%CONFIRM%"=="Y" (
-    echo å¾©æ—§ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¾ã—ãŸã€‚
+    echo •œ‹Œ‚ðƒLƒƒƒ“ƒZƒ‹‚µ‚Ü‚µ‚½B
     pause
     exit /b 0
 )
 
 pushd "%TARGET_REPO%"
 
-rem ç¾åœ¨ã®.gitãƒ•ã‚©ãƒ«ãƒ€ã‚’é€€é¿
+rem Œ»Ý‚Ì.gitƒtƒHƒ‹ƒ_‚ð‘Þ”ð
 set "REPLACE_TIMESTAMP=%date:~0,4%%date:~5,2%%date:~8,2%_%time:~0,2%%time:~3,2%%time:~6,2%"
 set "REPLACE_TIMESTAMP=%REPLACE_TIMESTAMP: =0%"
 
 if exist ".git" (
-    echo ç¾åœ¨ã®.gitãƒ•ã‚©ãƒ«ãƒ€ã‚’é€€é¿ä¸­...
+    echo Œ»Ý‚Ì.gitƒtƒHƒ‹ƒ_‚ð‘Þ”ð’†...
     move ".git" ".git_replaced_%REPLACE_TIMESTAMP%" >nul 2>&1
     if errorlevel 1 (
-        echo ã‚¨ãƒ©ãƒ¼: ç¾åœ¨ã®.gitãƒ•ã‚©ãƒ«ãƒ€ã®é€€é¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚
+        echo ƒGƒ‰[: Œ»Ý‚Ì.gitƒtƒHƒ‹ƒ_‚Ì‘Þ”ð‚ÉŽ¸”s‚µ‚Ü‚µ‚½B
         popd
         pause
         exit /b 1
     )
-    echo é€€é¿å®Œäº†: .git_replaced_%REPLACE_TIMESTAMP%
+    echo ‘Þ”ðŠ®—¹: .git_replaced_%REPLACE_TIMESTAMP%
 )
 
-rem ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‹ã‚‰å¾©å…ƒ
-echo .gitãƒ•ã‚©ãƒ«ãƒ€ã‚’å¾©å…ƒä¸­...
+rem ƒoƒbƒNƒAƒbƒv‚©‚ç•œŒ³
+echo .gitƒtƒHƒ‹ƒ_‚ð•œŒ³’†...
 xcopy "%BACKUP_DIR%\%BACKUP_FOLDER%" ".git" /E /I /H /Y >nul 2>&1
 if errorlevel 1 (
-    echo ã‚¨ãƒ©ãƒ¼: .gitãƒ•ã‚©ãƒ«ãƒ€ã®å¾©å…ƒã«å¤±æ•—ã—ã¾ã—ãŸã€‚
+    echo ƒGƒ‰[: .gitƒtƒHƒ‹ƒ_‚Ì•œŒ³‚ÉŽ¸”s‚µ‚Ü‚µ‚½B
     if exist ".git_replaced_%REPLACE_TIMESTAMP%" (
-        echo å…ƒã®.gitãƒ•ã‚©ãƒ«ãƒ€ã‚’å¾©æ—§ã—ã¦ã„ã¾ã™...
+        echo Œ³‚Ì.gitƒtƒHƒ‹ƒ_‚ð•œ‹Œ‚µ‚Ä‚¢‚Ü‚·...
         move ".git_replaced_%REPLACE_TIMESTAMP%" ".git" >nul 2>&1
     )
     popd
@@ -116,63 +116,63 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo å¾©å…ƒå®Œäº†ï¼
+echo •œŒ³Š®—¹I
 
-rem å¾©æ—§ç¢ºèª
+rem •œ‹ŒŠm”F
 echo.
-echo å¾©æ—§ç¢ºèªä¸­...
+echo •œ‹ŒŠm”F’†...
 call :ValidateGitRepository || goto :ValidationError
 
-echo å¾©æ—§ç¢ºèªOK: Gitãƒªãƒã‚¸ãƒˆãƒªã¨ã—ã¦æ­£å¸¸ã«æ©Ÿèƒ½ã—ã¦ã„ã¾ã™ã€‚
+echo •œ‹ŒŠm”FOK: GitƒŠƒ|ƒWƒgƒŠ‚Æ‚µ‚Ä³í‚É‹@”\‚µ‚Ä‚¢‚Ü‚·B
 
 popd
 
 echo.
 echo ========================================
-echo å¾©æ—§å®Œäº†
+echo •œ‹ŒŠ®—¹
 echo ========================================
-echo ãƒªãƒã‚¸ãƒˆãƒª: %REPO_NAME%
-echo å¾©æ—§å…ƒ: %BACKUP_FOLDER%
-echo é€€é¿å…ˆ: .git_replaced_%REPLACE_TIMESTAMP%
+echo ƒŠƒ|ƒWƒgƒŠ: %REPO_NAME%
+echo •œ‹ŒŒ³: %BACKUP_FOLDER%
+echo ‘Þ”ðæ: .git_replaced_%REPLACE_TIMESTAMP%
 echo.
-echo æ¬¡ã®æ‰‹é †:
-echo 1. git status ã§çŠ¶æ…‹ã‚’ç¢ºèª
-echo 2. git log ã§å±¥æ­´ã‚’ç¢ºèª
-echo 3. å•é¡Œãªã‘ã‚Œã°é€€é¿ãƒ•ã‚©ãƒ«ãƒ€(.git_replaced_*)ã‚’å‰Šé™¤
+echo ŽŸ‚ÌŽè‡:
+echo 1. git status ‚Åó‘Ô‚ðŠm”F
+echo 2. git log ‚Å—š—ð‚ðŠm”F
+echo 3. –â‘è‚È‚¯‚ê‚Î‘Þ”ðƒtƒHƒ‹ƒ_(.git_replaced_*)‚ðíœ
 echo.
 
 pause
 
 rem ========================================
-rem æ¤œè¨¼ã¨ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°é–¢æ•°
+rem ŒŸØ‚ÆƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒOŠÖ”
 rem ========================================
 
 :ValidateGitRepository
-rem åŸºæœ¬çš„ãªGitæ“ä½œã®ç¢ºèª
+rem Šî–{“I‚ÈGit‘€ì‚ÌŠm”F
 git status >nul 2>&1
 if errorlevel 1 (
-    echo ã‚¨ãƒ©ãƒ¼: git status ãŒå¤±æ•—ã—ã¾ã—ãŸã€‚
+    echo ƒGƒ‰[: git status ‚ªŽ¸”s‚µ‚Ü‚µ‚½B
     exit /b 1
 )
 
-rem ãƒªãƒã‚¸ãƒˆãƒªæ•´åˆæ€§ãƒã‚§ãƒƒã‚¯
-echo ãƒªãƒã‚¸ãƒˆãƒªæ•´åˆæ€§ã‚’ç¢ºèªä¸­...
+rem ƒŠƒ|ƒWƒgƒŠ®‡«ƒ`ƒFƒbƒN
+echo ƒŠƒ|ƒWƒgƒŠ®‡«‚ðŠm”F’†...
 git fsck --full >nul 2>&1
 if errorlevel 1 (
-    echo è­¦å‘Š: git fsck ã§æ•´åˆæ€§ã‚¨ãƒ©ãƒ¼ãŒæ¤œå‡ºã•ã‚Œã¾ã—ãŸã€‚
-    echo ãƒªãƒã‚¸ãƒˆãƒªã«å•é¡ŒãŒã‚ã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚
-    set /p "CONTINUE=æ•´åˆæ€§ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚Šã¾ã™ãŒå¾©æ—§ã‚’ç¶šè¡Œã—ã¾ã™ã‹ï¼Ÿ (Y/N): "
+    echo Œx: git fsck ‚Å®‡«ƒGƒ‰[‚ªŒŸo‚³‚ê‚Ü‚µ‚½B
+    echo ƒŠƒ|ƒWƒgƒŠ‚É–â‘è‚ª‚ ‚é‰Â”\«‚ª‚ ‚è‚Ü‚·B
+    set /p "CONTINUE=®‡«ƒGƒ‰[‚ª‚ ‚è‚Ü‚·‚ª•œ‹Œ‚ð‘±s‚µ‚Ü‚·‚©H (Y/N): "
     if /i not "!CONTINUE!"=="Y" (
         exit /b 1
     )
 ) else (
-    echo æ•´åˆæ€§ãƒã‚§ãƒƒã‚¯å®Œäº†: å•é¡Œã¯è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚
+    echo ®‡«ƒ`ƒFƒbƒNŠ®—¹: –â‘è‚ÍŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B
 )
 
-rem ãƒ–ãƒ©ãƒ³ãƒæƒ…å ±ã®ç¢ºèª
+rem ƒuƒ‰ƒ“ƒ`î•ñ‚ÌŠm”F
 git branch >nul 2>&1
 if errorlevel 1 (
-    echo ã‚¨ãƒ©ãƒ¼: ãƒ–ãƒ©ãƒ³ãƒæƒ…å ±ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚
+    echo ƒGƒ‰[: ƒuƒ‰ƒ“ƒ`î•ñ‚ÌŽæ“¾‚ÉŽ¸”s‚µ‚Ü‚µ‚½B
     exit /b 1
 )
 
@@ -181,23 +181,23 @@ exit /b 0
 :ValidationError
 echo.
 echo ========================================
-echo å¾©æ—§æ¤œè¨¼ã‚¨ãƒ©ãƒ¼
+echo •œ‹ŒŒŸØƒGƒ‰[
 echo ========================================
 echo.
-echo â–  ã“ã®ãƒ„ãƒ¼ãƒ«ãŒæä¾›ã™ã‚‹å¯¾å‡¦æ³•ï¼š
-echo   1. å¾©æ—§ã—ãŸãƒªãƒã‚¸ãƒˆãƒªã«å•é¡ŒãŒã‚ã‚Šã¾ã™
-echo   2. åˆ¥ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½¿ç”¨ã—ã¦å¾©æ—§ã‚’è©¦ã—ã¦ãã ã•ã„
-echo   3. é€€é¿ã—ãŸå…ƒã®.gitãƒ•ã‚©ãƒ«ãƒ€ã‚’æˆ»ã™ã“ã¨ã‚‚å¯èƒ½ã§ã™
+echo ¡ ‚±‚Ìƒc[ƒ‹‚ª’ñ‹Ÿ‚·‚é‘Îˆ–@F
+echo   1. •œ‹Œ‚µ‚½ƒŠƒ|ƒWƒgƒŠ‚É–â‘è‚ª‚ ‚è‚Ü‚·
+echo   2. •Ê‚ÌƒoƒbƒNƒAƒbƒv‚ðŽg—p‚µ‚Ä•œ‹Œ‚ðŽŽ‚µ‚Ä‚­‚¾‚³‚¢
+echo   3. ‘Þ”ð‚µ‚½Œ³‚Ì.gitƒtƒHƒ‹ƒ_‚ð–ß‚·‚±‚Æ‚à‰Â”\‚Å‚·
 echo.
-echo â–  ä¸€èˆ¬çš„ãªãƒˆãƒ©ãƒ–ãƒ«ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ï¼š
-echo   - git fsck --full ã§è©³ç´°ãªã‚¨ãƒ©ãƒ¼æƒ…å ±ã‚’ç¢ºèª
-echo   - ãƒªãƒ¢ãƒ¼ãƒˆãƒªãƒã‚¸ãƒˆãƒªã‹ã‚‰å†ã‚¯ãƒ­ãƒ¼ãƒ³ã‚’æ¤œè¨Ž
-echo   - åˆ¥ã®æ—¥æ™‚ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’è©¦ã—ã¦ã¿ã‚‹
+echo ¡ ˆê”Ê“I‚Èƒgƒ‰ƒuƒ‹ƒVƒ…[ƒeƒBƒ“ƒOF
+echo   - git fsck --full ‚ÅÚ×‚ÈƒGƒ‰[î•ñ‚ðŠm”F
+echo   - ƒŠƒ‚[ƒgƒŠƒ|ƒWƒgƒŠ‚©‚çÄƒNƒ[ƒ“‚ðŒŸ“¢
+echo   - •Ê‚Ì“úŽž‚ÌƒoƒbƒNƒAƒbƒv‚ðŽŽ‚µ‚Ä‚Ý‚é
 echo.
-echo åˆ©ç”¨å¯èƒ½ãªæ“ä½œ:
-echo 1. å…ƒã®.gitãƒ•ã‚©ãƒ«ãƒ€ã«æˆ»ã™ï¼ˆmove .git_replaced_%REPLACE_TIMESTAMP% .gitï¼‰
-echo 2. åˆ¥ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã§å†è©¦è¡Œ
-echo 3. ãƒªãƒ¢ãƒ¼ãƒˆã‹ã‚‰å†ã‚¯ãƒ­ãƒ¼ãƒ³
+echo —˜—p‰Â”\‚È‘€ì:
+echo 1. Œ³‚Ì.gitƒtƒHƒ‹ƒ_‚É–ß‚·imove .git_replaced_%REPLACE_TIMESTAMP% .gitj
+echo 2. •Ê‚ÌƒoƒbƒNƒAƒbƒv‚ÅÄŽŽs
+echo 3. ƒŠƒ‚[ƒg‚©‚çÄƒNƒ[ƒ“
 echo.
 popd
 pause

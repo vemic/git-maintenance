@@ -2,62 +2,62 @@
 chcp 932 >nul
 
 echo ========================================
-echo Git AutoCRLF ツール 初回セットアップ
+echo Git AutoCRLF �c�[�� ����Z�b�g�A�b�v
 echo ========================================
 echo.
 
-rem confディレクトリの確認
+rem conf�f�B���N�g���̊m�F
 if not exist "conf" (
-    echo confディレクトリを作成します...
+    echo conf�f�B���N�g�����쐬���܂�...
     mkdir conf
 )
 
-rem 設定ファイルのコピー
+rem �ݒ�t�@�C���̃R�s�[
 if not exist "conf\config.txt" (
     if exist "conf\config.txt.sample" (
-        echo config.txt を作成します...
+        echo config.txt ���쐬���܂�...
         copy "conf\config.txt.sample" "conf\config.txt" >nul
-        echo 作成完了: conf\config.txt
+        echo �쐬����: conf\config.txt
     ) else (
-        echo エラー: conf\config.txt.sample が見つかりません。
+        echo �G���[: conf\config.txt.sample ��������܂���B
     )
 ) else (
-    echo conf\config.txt は既に存在します。
+    echo conf\config.txt �͊��ɑ��݂��܂��B
 )
 
 if not exist "conf\repositories.txt" (
     if exist "conf\repositories.txt.sample" (
-        echo repositories.txt を作成します...
+        echo repositories.txt ���쐬���܂�...
         copy "conf\repositories.txt.sample" "conf\repositories.txt" >nul
-        echo 作成完了: conf\repositories.txt
+        echo �쐬����: conf\repositories.txt
     ) else (
-        echo エラー: conf\repositories.txt.sample が見つかりません。
+        echo �G���[: conf\repositories.txt.sample ��������܂���B
     )
 ) else (
-    echo conf\repositories.txt は既に存在します。
+    echo conf\repositories.txt �͊��ɑ��݂��܂��B
 )
 
-rem ディレクトリ作成
+rem �f�B���N�g���쐬
 if not exist "log" (
-    echo logディレクトリを作成します...
+    echo log�f�B���N�g�����쐬���܂�...
     mkdir log
 )
 
 if not exist "backup" (
-    echo backupディレクトリを作成します...
+    echo backup�f�B���N�g�����쐬���܂�...
     mkdir backup
 )
 
 echo.
 echo ========================================
-echo セットアップ完了
+echo �Z�b�g�A�b�v����
 echo ========================================
 echo.
-echo 次の手順:
-echo 1. conf\config.txt を編集してBASE_DIRを設定
-echo 2. conf\repositories.txt を編集して対象リポジトリを追加
-echo 3. git-autocrlf-recovery.bat を実行
+echo ���̎菇:
+echo 1. conf\config.txt ��ҏW����BASE_DIR��ݒ�
+echo 2. conf\repositories.txt ��ҏW���đΏۃ��|�W�g����ǉ�
+echo 3. git-autocrlf-recovery.bat �����s
 echo.
 
-echo セットアップが完了しました。
+echo �Z�b�g�A�b�v���������܂����B
 pause
