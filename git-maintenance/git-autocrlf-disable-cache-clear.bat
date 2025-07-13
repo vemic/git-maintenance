@@ -2,7 +2,7 @@
 chcp 932 >nul
 
 rem ========================================
-rem Git AutoCRLF無効化ツール
+rem Git AutoCRLF無効化＋キャッシュクリアツール
 rem ========================================
 
 set "SCRIPT_DIR=%~dp0"
@@ -13,7 +13,7 @@ set "BACKUP_DIR=%SCRIPT_DIR%backup"
 
 rem PowerShellを使用して安全な日付時刻文字列を生成
 for /f "tokens=*" %%i in ('powershell -Command "Get-Date -Format 'yyyyMMdd_HHmmss'"') do set "DATETIME_STR=%%i"
-set "LOG_FILE=%LOG_DIR%\git-autocrlf-disable_%DATETIME_STR%.log"
+set "LOG_FILE=%LOG_DIR%\git-autocrlf-disable-cache-clear_%DATETIME_STR%.log"
 
 rem ログファイルの絶対パス化（pushd後でも正しく動作するように）
 for %%i in ("%LOG_FILE%") do set "LOG_FILE_ABS=%%~fi"
@@ -23,11 +23,11 @@ call :ValidateSetup || goto :SetupError
 setlocal enabledelayedexpansion
 
 echo ========================================
-echo Git AutoCRLF 無効化ツール
+echo Git AutoCRLF 無効化＋キャッシュクリア ツール
 echo ========================================
 echo.
 echo 実行モードを選択してください:
-echo 1. AutoCRLF無効化実行
+echo 1. AutoCRLF無効化＋キャッシュクリア実行
 echo 2. リポジトリ情報確認
 echo 3. スタッシュ一覧表示  
 echo 4. git-autocrlf-disable関連スタッシュ復元
@@ -78,7 +78,7 @@ if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%"
 
 rem ログファイル初期化
-echo [%date% %time%] Git AutoCRLF 無効化処理開始 > "%LOG_FILE_ABS%"
+echo [%date% %time%] Git AutoCRLF 無効化＋キャッシュクリア処理開始 > "%LOG_FILE_ABS%"
 
 echo ベースディレクトリ: %BASE_DIR%
 echo ログファイル: %LOG_FILE%
@@ -234,9 +234,9 @@ call :SetAutocrlfFalse || (
 )
 
 rem GitキャッシュをクリアしてワーキングディレクトリをHEADで上書き
-echo 6. Gitキャッシュクリア・HEADリセット中...
+echo 6. Gitキャッシュ一括クリア・HEADリセット中...
 call :ResetToHead || (
-    echo エラー: HEADリセットに失敗しました
+    echo エラー: キャッシュクリア・HEADリセットに失敗しました
     popd
     set /a ERROR_COUNT+=1
     goto :eof
@@ -631,8 +631,8 @@ git rm --cached -r . >> "%LOG_FILE_ABS%" 2>&1
 echo   実行: git reset --hard HEAD
 git reset --hard HEAD >> "%LOG_FILE_ABS%" 2>&1
 if errorlevel 1 (
-    echo エラー: HEADリセットに失敗しました
-    echo [%date% %time%] エラー: HEADリセット失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
+    echo エラー: キャッシュクリア・HEADリセットに失敗しました
+    echo [%date% %time%] エラー: キャッシュクリア・HEADリセット失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
     exit /b 1
 )
 
@@ -640,8 +640,8 @@ rem ワーキングディレクトリをクリーンアップ
 echo   実行: git clean -fd
 git clean -fd >> "%LOG_FILE_ABS%" 2>&1
 
-echo   完了: ワーキングディレクトリをHEADの状態に復元しました
-echo [%date% %time%] HEADリセット・クリーンアップ完了 %REPO_NAME% >> "%LOG_FILE_ABS%"
+echo   完了: Gitキャッシュクリア・ワーキングディレクトリをHEADの状態に復元しました
+echo [%date% %time%] キャッシュクリア・HEADリセット・クリーンアップ完了 %REPO_NAME% >> "%LOG_FILE_ABS%"
 exit /b 0
 
 rem ========================================

@@ -55,8 +55,13 @@ echo ========================================
 echo.
 echo 次の手順:
 echo 1. conf\config.txt を編集してBASE_DIRを設定
-echo 2. conf\repositories.txt を編集して対象リポジトリを追加
-echo 3. git-autocrlf-recovery.bat を実行
+echo 2. conf\config.txt を編集してSEVENZIP_PATHを設定【必須】
+echo 3. conf\repositories.txt を編集して対象リポジトリを追加
+echo 4. git-autocrlf-recovery.bat を実行
+echo.
+echo 注意:
+echo - 7-Zipのインストールが必須です
+echo - 7-Zipが正しく設定されていない場合、ツールは動作しません
 echo.
 
 echo セットアップが完了しました。

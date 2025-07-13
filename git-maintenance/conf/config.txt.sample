@@ -1,23 +1,28 @@
-# Git AutoCRLF è¨­å®šå¤‰æ›´ãƒ»å¾©æ—§ãƒ„ãƒ¼ãƒ«è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«
+# Git AutoCRLF Ý’è•ÏXE•œ‹Œƒc[ƒ‹Ý’èƒtƒ@ƒCƒ‹
 
-# ãƒ™ãƒ¼ã‚¹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªï¼ˆè¤‡æ•°ã®Gitãƒªãƒã‚¸ãƒˆãƒªãŒé…ç½®ã•ã‚Œã¦ã„ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªï¼‰
-# ä¾‹: D:\projects
-# ä¾‹: C:\workspace
+# ƒx[ƒXƒfƒBƒŒƒNƒgƒŠi•¡”‚ÌGitƒŠƒ|ƒWƒgƒŠ‚ª”z’u‚³‚ê‚Ä‚¢‚éƒfƒBƒŒƒNƒgƒŠj
+# —á: D:\projects
+# —á: C:\workspace
 BASE_DIR=D:\projects
 
-# 7z.exeã®ãƒ‘ã‚¹ï¼ˆãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—åœ§ç¸®ç”¨ï¼‰
-# ä¾‹: C:\Program Files\7-Zip\7z.exe
-# ä¾‹: D:\tools\7zip\7z.exe
-# ç©ºç™½ã®å ´åˆã¯xcopyã«ã‚ˆã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã‚³ãƒ”ãƒ¼ã‚’ä½¿ç”¨
+# 7z.exe‚ÌƒpƒXiƒoƒbƒNƒAƒbƒvˆ³k—pjy•K{z
+# 7-Zip‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚éê‡‚ÍA7z.exe‚Ìâ‘ÎƒpƒX‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢
+# —á: C:\Program Files\7-Zip\7z.exe
+# —á: D:\tools\7zip\7z.exe
+# 7-Zip‚ÌƒCƒ“ƒXƒg[ƒ‹‚ª•K—v‚Å‚·
 SEVENZIP_PATH=C:\Program Files\7-Zip\7z.exe
 
-# æ³¨æ„äº‹é …:
-# - ãƒ‘ã‚¹ã«ã‚¹ãƒšãƒ¼ã‚¹ãŒå«ã¾ã‚Œã‚‹å ´åˆã§ã‚‚å¼•ç”¨ç¬¦ã¯ä¸è¦ã§ã™
-# - ç›¸å¯¾ãƒ‘ã‚¹ã¯ä½¿ç”¨ã§ãã¾ã›ã‚“ï¼ˆçµ¶å¯¾ãƒ‘ã‚¹ã‚’æŒ‡å®šã—ã¦ãã ã•ã„ï¼‰
-# - ãƒãƒƒã‚¯ã‚¹ãƒ©ãƒƒã‚·ãƒ¥(\)ã‚‚ã—ãã¯ã‚¹ãƒ©ãƒƒã‚·ãƒ¥(/)ã©ã¡ã‚‰ã§ã‚‚ä½¿ç”¨å¯èƒ½ã§ã™
-# - 7z.exeãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯è‡ªå‹•çš„ã«xcopyã‚’ä½¿ç”¨ã—ã¾ã™
+# ’ˆÓŽ–€:
+# - ƒpƒX‚ÉƒXƒy[ƒX‚ªŠÜ‚Ü‚ê‚éê‡‚Å‚àˆø—p•„‚Í•s—v‚Å‚·
+# - ‘Š‘ÎƒpƒX‚ÍŽg—p‚Å‚«‚Ü‚¹‚ñiâ‘ÎƒpƒX‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢j
+# - ƒoƒbƒNƒXƒ‰ƒbƒVƒ…(\)‚à‚µ‚­‚ÍƒXƒ‰ƒbƒVƒ…(/)‚Ç‚¿‚ç‚Å‚àŽg—p‰Â”\‚Å‚·
+# - 7-Zip‚ª³‚µ‚­Ý’è‚³‚ê‚Ä‚¢‚È‚¢ê‡Aƒc[ƒ‹‚Í“®ì‚µ‚Ü‚¹‚ñ
 # 
-# ä½¿ç”¨æ–¹æ³•:
-# 1. setup.bat ã‚’å®Ÿè¡Œã™ã‚‹ã¨ã€ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒè‡ªå‹•çš„ã« config.txt ã¨ã—ã¦ã‚³ãƒ”ãƒ¼ã•ã‚Œã¾ã™
-# 2. conf\config.txt ã‚’ç·¨é›†ã—ã¦ BASE_DIR ã‚’å®Ÿéš›ã®ãƒ‘ã‚¹ã«å¤‰æ›´ã—ã¦ãã ã•ã„
-# 3. 7-Zipã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯ SEVENZIP_PATH ã‚‚è¨­å®šã—ã¦ãã ã•ã„
+# 7-Zip‚É‚Â‚¢‚Ä:
+# - 7-Zip‚ÌƒCƒ“ƒXƒg[ƒ‹‚ª•K{‚Å‚·: https://www.7-zip.org/
+# - 7-Zip‚ðŽg—p‚µ‚ÄƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ðˆ³k‚µ‚Ü‚·
+# 
+# Žg—p•û–@:
+# 1. setup.bat ‚ðŽÀs‚·‚é‚ÆA‚±‚Ìƒtƒ@ƒCƒ‹‚ªŽ©“®“I‚É config.txt ‚Æ‚µ‚ÄƒRƒs[‚³‚ê‚Ü‚·
+# 2. conf\config.txt ‚ð•ÒW‚µ‚Ä BASE_DIR ‚ðŽÀÛ‚ÌƒpƒX‚É•ÏX‚µ‚Ä‚­‚¾‚³‚¢
+# 3. conf\config.txt ‚ð•ÒW‚µ‚Ä SEVENZIP_PATH ‚ðÝ’è‚µ‚Ä‚­‚¾‚³‚¢y•K{z
