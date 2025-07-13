@@ -1,0 +1,19 @@
+# 対象リポジトリリスト
+# コメント行は # で始めてください
+# 空行は無視されます
+# 
+# フォルダ名のみを記載してください（BASE_DIRからの相対パス）
+# 例:
+# my-project
+# web-application
+# api-server
+
+# サンプルリポジトリ（実際の使用時は削除してください）
+sample-repo1
+sample-repo2
+
+# 以下に実際のリポジトリ名を追加してください
+# 
+# 使用方法:
+# 1. setup.bat を実行すると、このファイルが自動的に repositories.txt としてコピーされます
+# 2. conf\repositories.txt を編集して実際のリポジトリ名を追加してください

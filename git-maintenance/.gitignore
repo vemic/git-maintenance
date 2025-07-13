@@ -1,0 +1,15 @@
+# 設定ファイル（個人環境依存）
+conf/config.txt
+conf/repositories.txt
+
+# ログファイル
+log/
+
+# バックアップファイル
+backup/
+
+# 一時ファイル・復旧時の退避ファイル
+*.tmp
+temp_*
+.git_replaced_*
+.git_broken

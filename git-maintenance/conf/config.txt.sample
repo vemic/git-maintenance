@@ -1,0 +1,23 @@
+# Git AutoCRLF 設定変更・復旧ツール設定ファイル
+
+# ベースディレクトリ（複数のGitリポジトリが配置されているディレクトリ）
+# 例: D:\projects
+# 例: C:\workspace
+BASE_DIR=D:\projects
+
+# 7z.exeのパス（バックアップ圧縮用）
+# 例: C:\Program Files\7-Zip\7z.exe
+# 例: D:\tools\7zip\7z.exe
+# 空白の場合はxcopyによるフォルダコピーを使用
+SEVENZIP_PATH=C:\Program Files\7-Zip\7z.exe
+
+# 注意事項:
+# - パスにスペースが含まれる場合でも引用符は不要です
+# - 相対パスは使用できません（絶対パスを指定してください）
+# - バックスラッシュ(\)もしくはスラッシュ(/)どちらでも使用可能です
+# - 7z.exeが見つからない場合は自動的にxcopyを使用します
+# 
+# 使用方法:
+# 1. setup.bat を実行すると、このファイルが自動的に config.txt としてコピーされます
+# 2. conf\config.txt を編集して BASE_DIR を実際のパスに変更してください
+# 3. 7-Zipを使用する場合は SEVENZIP_PATH も設定してください
