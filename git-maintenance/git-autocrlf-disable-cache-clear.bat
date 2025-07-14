@@ -27,7 +27,7 @@ echo Git AutoCRLF 無効化＋キャッシュクリア ツール
 echo ========================================
 echo.
 echo 実行モードを選択してください:
-echo 1. AutoCRLF無効化＋キャッシュクリア実行
+echo 1. AutoCRLF無効化＋キャッシュクリア実行（リポジトリ全体バックアップ付き）
 echo 2. リポジトリ情報確認
 echo 3. スタッシュ一覧表示  
 echo 4. git-autocrlf-disable関連スタッシュ復元
@@ -81,7 +81,7 @@ if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%"
 
 REM ログファイル初期化
-echo [%date% %time%] Git AutoCRLF 無効化＋キャッシュクリア処理開始 > "%LOG_FILE_ABS%"
+echo [%date% %time%] Git AutoCRLF 無効化＋キャッシュクリア処理開始（2フェーズ実行・リポジトリ全体バックアップ付き） > "%LOG_FILE_ABS%"
 
 echo ベースディレクトリ: %BASE_DIR%
 echo ログファイル: %LOG_FILE%
@@ -111,7 +111,20 @@ type "%REPO_LIST_FILE%"
 echo ----------------------------------------
 echo.
 
-set /p "CONFIRM=処理を実行しますか？ (Y/N): "
+echo.
+echo ========================================
+echo 重要な注意事項
+echo ========================================
+echo バッチ実行中は対象リポジトリやEclipse等の関連ツールを
+echo 使用しないでください。
+echo.
+echo - Git操作を行うツール（Eclipse、IntelliJ、SourceTree等）を閉じてください
+echo - 対象ディレクトリ内のファイルを直接編集しないでください
+echo - バックアップとリセット処理が完了するまでお待ちください
+echo ========================================
+echo.
+
+set /p "CONFIRM=上記を理解して処理を実行しますか？ (Y/N): "
 if /i not "%CONFIRM%"=="Y" (
     echo 処理をキャンセルしました。
     pause
@@ -120,13 +133,54 @@ if /i not "%CONFIRM%"=="Y" (
 )
 
 echo.
-echo 処理を開始します...
+echo ========================================
+echo フェーズ1: 全リポジトリのバックアップ実行
+echo ========================================
+echo.
+
+set "BACKUP_SUCCESS_COUNT=0"
+set "BACKUP_ERROR_COUNT=0"
+
+REM 全リポジトリのバックアップを最初に実行
+for /f "usebackq tokens=*" %%r in ("%REPO_LIST_FILE%") do (
+    set "REPO_NAME=%%r"
+    
+    REM コメント行やempty行をスキップ
+    if not "!REPO_NAME!"=="" (
+        if not "!REPO_NAME:~0,1!"=="#" (
+            call :BackupRepository "!REPO_NAME!"
+        )
+    )
+)
+
+echo.
+echo ========================================
+echo バックアップ結果
+echo ========================================
+echo 成功: %BACKUP_SUCCESS_COUNT% リポジトリ
+echo エラー: %BACKUP_ERROR_COUNT% リポジトリ
+
+if %BACKUP_ERROR_COUNT% gtr 0 (
+    echo.
+    echo エラー: バックアップに失敗したリポジトリがあるため、
+    echo 変更処理を中止します。
+    echo ログファイル: %LOG_FILE%
+    echo.
+    pause
+    endlocal
+    exit /b 1
+)
+
+echo.
+echo ========================================
+echo フェーズ2: AutoCRLF設定変更・キャッシュクリア実行
+echo ========================================
 echo.
 
 set "SUCCESS_COUNT=0"
 set "ERROR_COUNT=0"
 
-REM リポジトリリストの処理
+REM 全バックアップが成功した場合のみ変更処理を実行
 for /f "usebackq tokens=*" %%r in ("%REPO_LIST_FILE%") do (
     set "REPO_NAME=%%r"
     
@@ -142,14 +196,68 @@ echo.
 echo ========================================
 echo 処理完了
 echo ========================================
-echo 成功: %SUCCESS_COUNT% リポジトリ
-echo エラー: %ERROR_COUNT% リポジトリ
+echo バックアップ成功: %BACKUP_SUCCESS_COUNT% リポジトリ
+echo 変更処理成功: %SUCCESS_COUNT% リポジトリ
+echo 変更処理エラー: %ERROR_COUNT% リポジトリ
 echo ログファイル: %LOG_FILE%
 echo.
 
 pause
 endlocal
 exit /b 0
+
+REM ========================================
+REM バックアップ専用処理関数
+REM ========================================
+:BackupRepository
+setlocal enabledelayedexpansion
+set "REPO_NAME=%~1"
+set "REPO_PATH=%BASE_DIR%\%REPO_NAME%"
+
+echo ----------------------------------------
+echo バックアップ中: %REPO_NAME%
+echo ----------------------------------------
+
+REM ログ出力
+echo [%date% %time%] バックアップ開始: %REPO_NAME% >> "%LOG_FILE_ABS%"
+
+REM リポジトリディレクトリの確認
+if not exist "%REPO_PATH%" (
+    echo エラー: リポジトリディレクトリが見つかりません: %REPO_PATH%
+    echo [%date% %time%] エラー: ディレクトリ不存在 %REPO_PATH% >> "%LOG_FILE_ABS%"
+    set /a BACKUP_ERROR_COUNT+=1
+    endlocal
+    goto :eof
+)
+
+REM .gitディレクトリの確認
+if not exist "%REPO_PATH%\.git" (
+    echo エラー: Gitリポジトリではありません: %REPO_PATH%
+    echo [%date% %time%] エラー: Gitリポジトリではない %REPO_PATH% >> "%LOG_FILE_ABS%"
+    set /a BACKUP_ERROR_COUNT+=1
+    endlocal
+    goto :eof
+)
+
+REM リポジトリ全体のバックアップ作成
+REM PowerShellを使用してバックアップ用タイムスタンプ生成
+for /f "tokens=*" %%i in ('powershell -Command "Get-Date -Format 'yyyyMMdd_HHmmss'"') do set "BACKUP_TIMESTAMP=%%i"
+set "REPO_BACKUP_DIR=%BACKUP_DIR%\%REPO_NAME%_full_%BACKUP_TIMESTAMP%"
+
+call :CreateFullRepositoryBackup "%REPO_PATH%" "%REPO_BACKUP_DIR%" || (
+    echo エラー: リポジトリ全体のバックアップに失敗しました
+    echo [%date% %time%] エラー: 全体バックアップ失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
+    set /a BACKUP_ERROR_COUNT+=1
+    endlocal
+    goto :eof
+)
+
+echo 完了: %REPO_NAME% のバックアップが完了しました
+echo [%date% %time%] バックアップ完了: %REPO_NAME% >> "%LOG_FILE_ABS%"
+set /a BACKUP_SUCCESS_COUNT+=1
+
+endlocal
+goto :eof
 
 REM ========================================
 REM リポジトリ処理関数
@@ -213,23 +321,8 @@ call :HandleChanges || (
     goto :eof
 )
 
-REM .gitフォルダのバックアップ作成（スタッシュ後に実行）
-echo 3. .gitフォルダバックアップ作成中...
-REM PowerShellを使用してバックアップ用タイムスタンプ生成
-for /f "tokens=*" %%i in ('powershell -Command "Get-Date -Format 'yyyyMMdd_HHmmss'"') do set "BACKUP_TIMESTAMP=%%i"
-set "GIT_BACKUP_DIR=%BACKUP_DIR%\%REPO_NAME%_%BACKUP_TIMESTAMP%"
-
-call :CreateBackup "%REPO_PATH%\.git" "%GIT_BACKUP_DIR%" || (
-    echo エラー: .gitフォルダのバックアップに失敗しました
-    echo [%date% %time%] エラー: バックアップ失敗により処理中止 %REPO_NAME% >> "%LOG_FILE_ABS%"
-    popd
-    endlocal
-    set /a ERROR_COUNT+=1
-    goto :eof
-)
-
 REM 現在のautocrlf設定確認
-echo 4. 現在のautocrlf設定確認中...
+echo 3. 現在のautocrlf設定確認中...
 echo   実行: git config core.autocrlf
 for /f "tokens=*" %%a in ('git config core.autocrlf 2^>nul') do set "CURRENT_AUTOCRLF=%%a"
 if not defined CURRENT_AUTOCRLF set "CURRENT_AUTOCRLF=未設定"
@@ -237,7 +330,7 @@ echo   現在の設定: %CURRENT_AUTOCRLF%
 echo [%date% %time%] 現在のautocrlf設定: %CURRENT_AUTOCRLF% %REPO_NAME% >> "%LOG_FILE_ABS%"
 
 REM autocrlf=false に設定
-echo 5. autocrlf=false に設定中...
+echo 4. autocrlf=false に設定中...
 call :SetAutocrlfFalse || (
     echo エラー: autocrlf設定変更に失敗しました
     popd
@@ -247,7 +340,7 @@ call :SetAutocrlfFalse || (
 )
 
 REM GitキャッシュをクリアしてワーキングディレクトリをHEADで上書き
-echo 6. Gitキャッシュ一括クリア・HEADリセット中...
+echo 5. Gitキャッシュ一括クリア・HEADリセット中...
 call :ResetToHead || (
     echo エラー: キャッシュクリア・HEADリセットに失敗しました
     popd
@@ -258,7 +351,7 @@ call :ResetToHead || (
 
 popd
 
-echo 7. 完了: %REPO_NAME%
+echo 6. 完了: %REPO_NAME%
 echo [%date% %time%] 処理完了: %REPO_NAME% >> "%LOG_FILE_ABS%"
 set /a SUCCESS_COUNT+=1
 
@@ -623,15 +716,41 @@ if not defined SEVENZIP_PATH (
 )
 
 echo   実行: "%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5
-"%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5 >nul 2>&1
+"%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5 2>&1
 if not errorlevel 1 (
     echo   7z圧縮バックアップ完了: %BACKUP_PATH%.7z
     echo [%date% %time%] 7z圧縮バックアップ完了: %BACKUP_PATH%.7z >> "%LOG_FILE_ABS%"
     endlocal
     exit /b 0
 ) else (
-    echo エラー: 7z圧縮に失敗しました
-    echo [%date% %time%] エラー: 7z圧縮失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
+    echo エラー: 7z圧縮に失敗しました（終了コード: %ERRORLEVEL%）
+    echo [%date% %time%] エラー: 7z圧縮失敗（終了コード: %ERRORLEVEL%） %REPO_NAME% >> "%LOG_FILE_ABS%"
+    endlocal
+    exit /b 1
+)
+
+:CreateFullRepositoryBackup
+setlocal enabledelayedexpansion
+set "SOURCE_PATH=%~1"
+set "BACKUP_PATH=%~2"
+
+REM 7z.exe使用が必須
+if not defined SEVENZIP_PATH (
+    echo エラー: 7z.exeが設定されていません
+    endlocal
+    exit /b 1
+)
+
+echo   実行: "%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5
+"%SEVENZIP_PATH%" a "%BACKUP_PATH%.7z" "%SOURCE_PATH%" -mx5 2>&1
+if not errorlevel 1 (
+    echo   リポジトリ全体の7z圧縮バックアップ完了: %BACKUP_PATH%.7z
+    echo [%date% %time%] リポジトリ全体の7z圧縮バックアップ完了: %BACKUP_PATH%.7z >> "%LOG_FILE_ABS%"
+    endlocal
+    exit /b 0
+) else (
+    echo エラー: リポジトリ全体の7z圧縮に失敗しました（終了コード: %ERRORLEVEL%）
+    echo [%date% %time%] エラー: リポジトリ全体の7z圧縮失敗（終了コード: %ERRORLEVEL%） %REPO_NAME% >> "%LOG_FILE_ABS%"
     endlocal
     exit /b 1
 )
