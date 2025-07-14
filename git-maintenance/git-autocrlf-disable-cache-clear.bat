@@ -108,6 +108,7 @@ REM リポジトリリストの表示
 echo 対象リポジトリ:
 echo ----------------------------------------
 type "%REPO_LIST_FILE%"
+echo.
 echo ----------------------------------------
 echo.
 
@@ -210,7 +211,6 @@ REM ========================================
 REM バックアップ専用処理関数
 REM ========================================
 :BackupRepository
-setlocal enabledelayedexpansion
 set "REPO_NAME=%~1"
 set "REPO_PATH=%BASE_DIR%\%REPO_NAME%"
 
@@ -226,7 +226,6 @@ if not exist "%REPO_PATH%" (
     echo エラー: リポジトリディレクトリが見つかりません: %REPO_PATH%
     echo [%date% %time%] エラー: ディレクトリ不存在 %REPO_PATH% >> "%LOG_FILE_ABS%"
     set /a BACKUP_ERROR_COUNT+=1
-    endlocal
     goto :eof
 )
 
@@ -235,7 +234,6 @@ if not exist "%REPO_PATH%\.git" (
     echo エラー: Gitリポジトリではありません: %REPO_PATH%
     echo [%date% %time%] エラー: Gitリポジトリではない %REPO_PATH% >> "%LOG_FILE_ABS%"
     set /a BACKUP_ERROR_COUNT+=1
-    endlocal
     goto :eof
 )
 
@@ -248,7 +246,6 @@ call :CreateFullRepositoryBackup "%REPO_PATH%" "%REPO_BACKUP_DIR%" || (
     echo エラー: リポジトリ全体のバックアップに失敗しました
     echo [%date% %time%] エラー: 全体バックアップ失敗 %REPO_NAME% >> "%LOG_FILE_ABS%"
     set /a BACKUP_ERROR_COUNT+=1
-    endlocal
     goto :eof
 )
 
@@ -256,14 +253,12 @@ echo 完了: %REPO_NAME% のバックアップが完了しました
 echo [%date% %time%] バックアップ完了: %REPO_NAME% >> "%LOG_FILE_ABS%"
 set /a BACKUP_SUCCESS_COUNT+=1
 
-endlocal
 goto :eof
 
 REM ========================================
 REM リポジトリ処理関数
 REM ========================================
 :ProcessRepository
-setlocal enabledelayedexpansion
 set "REPO_NAME=%~1"
 set "REPO_PATH=%BASE_DIR%\%REPO_NAME%"
 
@@ -279,7 +274,6 @@ if not exist "%REPO_PATH%" (
     echo エラー: リポジトリディレクトリが見つかりません: %REPO_PATH%
     echo [%date% %time%] エラー: ディレクトリ不存在 %REPO_PATH% >> "%LOG_FILE_ABS%"
     set /a ERROR_COUNT+=1
-    endlocal
     goto :eof
 )
 
@@ -288,7 +282,6 @@ if not exist "%REPO_PATH%\.git" (
     echo エラー: Gitリポジトリではありません: %REPO_PATH%
     echo [%date% %time%] エラー: Gitリポジトリではない %REPO_PATH% >> "%LOG_FILE_ABS%"
     set /a ERROR_COUNT+=1
-    endlocal
     goto :eof
 )
 
@@ -297,7 +290,6 @@ pushd "%REPO_PATH%" || (
     echo エラー: ディレクトリに移動できません: %REPO_PATH%
     echo [%date% %time%] エラー: ディレクトリ移動失敗 %REPO_PATH% >> "%LOG_FILE_ABS%"
     set /a ERROR_COUNT+=1
-    endlocal
     goto :eof
 )
 
@@ -306,7 +298,6 @@ echo 1. ステータス確認中...
 call :CheckGitStatus || (
     echo エラー: Git状態確認に失敗しました
     popd
-    endlocal
     set /a ERROR_COUNT+=1
     goto :eof
 )
@@ -316,7 +307,6 @@ echo 2. 変更確認・スタッシュ中...
 call :HandleChanges || (
     echo エラー: 変更処理に失敗しました
     popd
-    endlocal
     set /a ERROR_COUNT+=1
     goto :eof
 )
@@ -334,7 +324,6 @@ echo 4. autocrlf=false に設定中...
 call :SetAutocrlfFalse || (
     echo エラー: autocrlf設定変更に失敗しました
     popd
-    endlocal
     set /a ERROR_COUNT+=1
     goto :eof
 )
@@ -344,7 +333,6 @@ echo 5. Gitキャッシュ一括クリア・HEADリセット中...
 call :ResetToHead || (
     echo エラー: キャッシュクリア・HEADリセットに失敗しました
     popd
-    endlocal
     set /a ERROR_COUNT+=1
     goto :eof
 )
@@ -355,7 +343,6 @@ echo 6. 完了: %REPO_NAME%
 echo [%date% %time%] 処理完了: %REPO_NAME% >> "%LOG_FILE_ABS%"
 set /a SUCCESS_COUNT+=1
 
-endlocal
 goto :eof
 
 REM ========================================
@@ -406,7 +393,6 @@ endlocal
 exit /b 0
 
 :CheckRepository
-setlocal enabledelayedexpansion
 set "REPO_NAME=%~1"
 set "REPO_PATH=%BASE_DIR%\%REPO_NAME%"
 
@@ -418,7 +404,6 @@ if not exist "%REPO_PATH%" (
     echo   状態: ディレクトリが存在しません
     echo   パス: %REPO_PATH%
     set /a CHECK_ERROR_COUNT+=1
-    endlocal
     goto :eof
 )
 
@@ -426,12 +411,10 @@ if not exist "%REPO_PATH%\.git" (
     echo   状態: Gitリポジトリではありません
     echo   パス: %REPO_PATH%
     set /a CHECK_ERROR_COUNT+=1
-    endlocal
     goto :eof
 )
 
 pushd "%REPO_PATH%" || (
-    endlocal
     goto :eof
 )
 
@@ -471,7 +454,6 @@ echo   スタッシュ数: %STASH_COUNT% (disable関連: %DISABLE_STASH_COUNT%)
 set /a VALID_COUNT+=1
 
 popd
-endlocal
 goto :eof
 
 REM ========================================
