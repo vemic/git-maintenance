@@ -270,6 +270,28 @@ for /d %%d in ("%BACKUP_BASE%\*") do (
 - **復旧後は必ずgit statusで状態確認**を行ってください
 - **リモートリポジトリとの同期**が必要な場合があります
 
+## 開発者向け情報
+
+### リリース作成手順
+
+#### 自動リリース（推奨）
+1. タグをプッシュ：`git tag v1.0.0 && git push origin v1.0.0`
+2. GitHub Actionsが自動でリリースを作成
+
+#### 手動リリース
+1. `create-release.bat` を実行してリリース用zipファイルを作成
+2. GitHubでタグとリリースを手動作成
+3. 生成されたzipファイルをリリースページにアップロード
+
+### GitHub Actions設定
+
+`.github/workflows/release.yml` により、`v*` タグプッシュ時に自動でリリースが作成されます：
+
+- リリース用zipファイルの自動生成
+- 不要ファイル（.git、ログ、バックアップ等）の除外
+- GitHubリリースページの自動作成
+- リリースノートテンプレートの適用
+
 ---
 
 <sub>Created by [vemic](https://github.com/vemic)</sub>
